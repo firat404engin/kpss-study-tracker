@@ -42,9 +42,18 @@ public class IndexModel : BasePageModel
 
     public async Task OnGetAsync()
     {
-        ExamDate = DateTime.Parse(_config["KPSS:ExamDate"] ?? DateTime.UtcNow.ToString("yyyy-MM-dd"));
-        ApplicationStartDate = DateTime.Parse(_config["KPSS:ApplicationStartDate"] ?? DateTime.UtcNow.ToString("yyyy-MM-dd"));
-        ApplicationEndDate = DateTime.Parse(_config["KPSS:ApplicationEndDate"] ?? DateTime.UtcNow.ToString("yyyy-MM-dd"));
+        try
+        {
+            ExamDate = DateTime.Parse(_config["KPSS:ExamDate"] ?? "2026-09-06");
+            ApplicationStartDate = DateTime.Parse(_config["KPSS:ApplicationStartDate"] ?? "2026-07-01");
+            ApplicationEndDate = DateTime.Parse(_config["KPSS:ApplicationEndDate"] ?? "2026-07-13");
+        }
+        catch
+        {
+            ExamDate = new DateTime(2026, 9, 6);
+            ApplicationStartDate = new DateTime(2026, 7, 1);
+            ApplicationEndDate = new DateTime(2026, 7, 13);
+        }
         
         // Türkçe motivasyon mesajları - KPSS odaklı
         var turkishQuotes = new List<string>
