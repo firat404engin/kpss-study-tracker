@@ -22,8 +22,13 @@ namespace KPSSStudyTracker.Pages.Admin
         public string? SuccessMessage { get; set; }
         public string? ErrorMessage { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            if (!IsAdmin)
+            {
+                return RedirectToPage("/Index");
+            }
+            
             var userId = GetCurrentUserIdRequired();
             var cografyaDersi = await _context.Lessons.FirstOrDefaultAsync(l => l.Name == "Coğrafya");
             if (cografyaDersi != null)
@@ -32,6 +37,8 @@ namespace KPSSStudyTracker.Pages.Admin
                 MevcutKonular = await _context.Topics.Where(t => t.LessonId == cografyaDersi.Id).ToListAsync();
                 MevcutKonuSayisi = MevcutKonular.Count;
             }
+            
+            return Page();
         }
 
         public async Task<IActionResult> OnPostSeedCografyaAsync()

@@ -181,24 +181,27 @@
                                     </button>
                                     }
                                     
-                                    <!-- Durum Değiştir Butonu -->
+                                    <!-- Durum Değiştir Butonu - Mobilde Büyük -->
                                     <form method="post" asp-page-handler="Toggle" class="inline">
                                         <input type="hidden" name="topicId" value="@t.Id" />
-                                        <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors p-1" 
-                                                title="@(completed ? "Tamamlanmadı olarak işaretle" : "Tamamlandı olarak işaretle")">
+                                        <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors p-2 sm:p-1 text-lg sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center" 
+                                                title="@(completed ? "Tamamlanmadı olarak işaretle" : "Konu Bitti")">
                                             <i class="bi bi-toggle-@(completed ? "on" : "off")"></i>
                                         </button>
                                     </form>
                                     
-                                    <!-- Sil Butonu -->
+                                    <!-- Sil Butonu - Sadece Admin -->
+                                    @if (Model.IsAdmin)
+                                    {
                                     <form method="post" asp-page-handler="DeleteTopic" class="inline" 
                                           onsubmit="return confirm('Bu konunun ilerlemesini silmek istediğinizden emin misiniz?')">
                                         <input type="hidden" name="topicId" value="@t.Id" />
-                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors p-1" 
+                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors p-2 sm:p-1 text-lg sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center" 
                                                 title="İlerlemeyi Sil">
                                             <i class="bi bi-trash-fill"></i>
                                         </button>
                                     </form>
+                                    }
                                 </div>
                             </td>
                         </tr>
