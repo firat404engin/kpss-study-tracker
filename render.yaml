@@ -9,7 +9,7 @@ services:
     dockerfilePath: ./Dockerfile
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
-        value: Production
+        value: Development
       - key: ConnectionStrings__DefaultConnection
         value: Host=dpg-d6nk2b4r85hc73fpr75g-a.frankfurt-postgres.render.com;Port=5432;Database=kpssdb;Username=kpss_user;Password=8bZO5qUY7dgfcoHuEzmBSrcSuenPaiZT;SSL Mode=Require;Trust Server Certificate=true
     healthCheckPath: /
