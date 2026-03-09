@@ -25,7 +25,7 @@ namespace KPSSStudyTracker.Pages.StudyScheduler
 
             // Sınav tarihini config'den al
             var config = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
-            ExamDate = DateTime.Parse(config["KPSS:ExamDate"] ?? DateTime.Today.AddMonths(6).ToString("yyyy-MM-dd"));
+            ExamDate = DateTime.Parse(config["KPSS:ExamDate"] ?? DateTime.UtcNow.Date.AddMonths(6).ToString("yyyy-MM-dd"));
 
             // Dersleri ve konularını getir
             var lessons = await _context.Lessons
@@ -65,7 +65,7 @@ namespace KPSSStudyTracker.Pages.StudyScheduler
             var userId = GetCurrentUserIdRequired();
 
             // Validasyonlar
-            if (Input.ExamDate <= DateTime.Today)
+            if (Input.ExamDate <= DateTime.UtcNow.Date)
             {
                 ErrorMessage = "Sınav tarihi bugünden sonra olmalıdır.";
                 await OnGetAsync();
@@ -108,7 +108,7 @@ namespace KPSSStudyTracker.Pages.StudyScheduler
             var schedule = new List<DailySchedule>();
 
             // 1. Bugünün tarihini al
-            var startDate = DateTime.Today;
+            var startDate = DateTime.UtcNow.Date;
             var endDate = Input.ExamDate;
 
             // 2. Seçilen dersleri ve konuları al
@@ -256,7 +256,7 @@ namespace KPSSStudyTracker.Pages.StudyScheduler
             {
                 UserId = userId,
                 WeekNumber = 1,
-                PlanTitle = $"Otomatik Program - {DateTime.Today:dd/MM/yyyy}",
+                PlanTitle = $"Otomatik Program - {DateTime.UtcNow.Date:dd/MM/yyyy}",
                 Description = $"Sınav: {Input.ExamDate:dd/MM/yyyy}, {totalDays} gün, {totalTopics} konu, {totalLessons} ders planı, Günlük {Input.DailyHours}h",
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow

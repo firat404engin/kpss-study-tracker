@@ -89,7 +89,7 @@ namespace KPSSStudyTracker.Pages.Exams
         {
             [Required(ErrorMessage = "Deneme adı zorunludur.")]
             public string Name { get; set; } = string.Empty;
-            public DateTime Date { get; set; } = DateTime.Today;
+            public DateTime Date { get; set; } = DateTime.UtcNow.Date;
             public string? Notes { get; set; }
         }
     }

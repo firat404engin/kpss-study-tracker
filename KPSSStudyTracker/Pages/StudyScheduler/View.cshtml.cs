@@ -49,7 +49,7 @@ namespace KPSSStudyTracker.Pages.StudyScheduler
                 .ToList();
 
             // Tarihleri oluştur ve planları grupla
-            var currentDate = DateTime.Today;
+            var currentDate = DateTime.UtcNow.Date;
             var plansByDate = new Dictionary<DateTime, List<DailyPlan>>();
             
             foreach (var dailyPlan in dailyPlansGroupedByDate)
