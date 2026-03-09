@@ -131,7 +131,7 @@ namespace KPSSStudyTracker.MigrationTool
         static async Task Main(string[] args)
         {
             var mssqlConn = "Server=(localdb)\\mssqllocaldb;Database=KPSSStudyTrackerDb;Trusted_Connection=true;TrustServerCertificate=true;";
-            var postgresConn = "Host=localhost;Port=5432;Database=KPSSStudyTrackerDb;Username=postgres;Password=postgres";
+            var postgresConn = "Host=dpg-d6nk2b4r85hc73fpr75g-a.frankfurt-postgres.render.com;Port=5432;Database=kpssdb;Username=kpss_user;Password=8bZO5qUY7dgfcoHuEzmBSrcSuenPaiZT;SSL Mode=Require";
 
             var migrator = new DatabaseMigrator(mssqlConn, postgresConn);
             await migrator.MigrateAllData();
