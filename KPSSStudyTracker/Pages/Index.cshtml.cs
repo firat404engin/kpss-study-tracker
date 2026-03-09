@@ -98,7 +98,7 @@ public class IndexModel : BasePageModel
         TotalTopicsCompleted = await _context.UserTopicProgresses.CountAsync(utp => utp.UserId == userId && utp.Completed);
         TotalQuestions = await _context.UserTopicProgresses.Where(utp => utp.UserId == userId).SumAsync(utp => utp.SolvedQuestions);
 
-        var today = DateTime.Today;
+        var today = DateTime.UtcNow.Date;
         TodayTodos = await _context.DailyTodos
             .Where(t => t.UserId == userId && t.Date.Date == today)
             .OrderBy(t => t.IsCompleted)
@@ -121,7 +121,7 @@ public class IndexModel : BasePageModel
             .GroupBy(utp => utp.Topic!.LessonId)
             .ToDictionary(g => g.Key, g => g.ToList());
         
-        var weekStart = DateTime.Today.AddDays(-7);
+        var weekStart = DateTime.UtcNow.Date.AddDays(-7);
         var userWeeklyPlans = await _context.WeeklyPlans
             .Where(w => w.UserId == userId)
             .Select(w => w.Id)

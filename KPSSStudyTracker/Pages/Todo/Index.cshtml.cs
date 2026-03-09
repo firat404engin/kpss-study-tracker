@@ -12,7 +12,7 @@ namespace KPSSStudyTracker.Pages.Todo
         public IndexModel(AppDbContext context) { _context = context; }
 
         [BindProperty(SupportsGet = true)]
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateTime Date { get; set; } = DateTime.UtcNow.Date;
 
         public List<DailyTodo> Items { get; set; } = new();
 
@@ -22,7 +22,7 @@ namespace KPSSStudyTracker.Pages.Todo
         public async Task OnGetAsync()
         {
             var userId = GetCurrentUserIdRequired();
-            var targetDate = Date.Date;
+            var targetDate = Date.Date.ToUniversalTime();
             Items = await _context.DailyTodos
                 .Where(t => t.UserId == userId && t.Date.Date == targetDate)
                 .OrderBy(t => t.IsCompleted)
@@ -89,7 +89,7 @@ namespace KPSSStudyTracker.Pages.Todo
                 _context.DailyTodos.Remove(item);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToPage("Index", new { date = DateTime.Today.ToString("yyyy-MM-dd") });
+            return RedirectToPage("Index", new { date = DateTime.UtcNow.Date.ToString("yyyy-MM-dd") });
         }
     }
 }

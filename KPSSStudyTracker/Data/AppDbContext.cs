@@ -162,6 +162,30 @@ namespace KPSSStudyTracker.Data
             modelBuilder.Entity<DailyTodo>()
                 .HasIndex(t => new { t.UserId, t.Date });
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            // Convert all DateTime values to UTC before saving to PostgreSQL
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                foreach (var property in entry.Properties)
+                {
+                    if (property.CurrentValue is DateTime dateTime)
+                    {
+                        if (dateTime.Kind == DateTimeKind.Local)
+                        {
+                            property.CurrentValue = dateTime.ToUniversalTime();
+                        }
+                        else if (dateTime.Kind == DateTimeKind.Unspecified)
+                        {
+                            property.CurrentValue = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
+                        }
+                    }
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
     }
 }
 
