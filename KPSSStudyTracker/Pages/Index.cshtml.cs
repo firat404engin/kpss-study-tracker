@@ -95,14 +95,15 @@ public class IndexModel : BasePageModel
             return;
         }
 
-        TotalTopicsCompleted = _context.UserTopicProgresses.Count(utp => utp.UserId == userId && utp.Completed);
-        TotalQuestions = _context.UserTopicProgresses.Where(utp => utp.UserId == userId).Sum(utp => utp.SolvedQuestions);
+        TotalTopicsCompleted = await _context.UserTopicProgresses.CountAsync(utp => utp.UserId == userId && utp.Completed);
+        TotalQuestions = await _context.UserTopicProgresses.Where(utp => utp.UserId == userId).SumAsync(utp => utp.SolvedQuestions);
 
-        TodayTodos = _context.DailyTodos
-            .Where(t => t.UserId == userId && t.Date == DateTime.Today)
+        var today = DateTime.Today;
+        TodayTodos = await _context.DailyTodos
+            .Where(t => t.UserId == userId && t.Date.Date == today)
             .OrderBy(t => t.IsCompleted)
             .ThenBy(t => t.Id)
-            .ToList();
+            .ToListAsync();
 
         // Per-lesson progress (overall) + weekly completed using PlanTopics timestamps
         var lessons = await _context.Lessons.Include(l => l.Topics).ToListAsync();

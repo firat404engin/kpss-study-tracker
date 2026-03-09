@@ -22,8 +22,9 @@ namespace KPSSStudyTracker.Pages.Todo
         public async Task OnGetAsync()
         {
             var userId = GetCurrentUserIdRequired();
+            var targetDate = Date.Date;
             Items = await _context.DailyTodos
-                .Where(t => t.UserId == userId && t.Date == Date.Date)
+                .Where(t => t.UserId == userId && t.Date.Date == targetDate)
                 .OrderBy(t => t.IsCompleted)
                 .ThenBy(t => t.Id)
                 .ToListAsync();
