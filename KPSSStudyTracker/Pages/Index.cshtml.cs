@@ -76,7 +76,7 @@ public class IndexModel : BasePageModel
             "🔥 KPSS yolculuğunda sabırlı ol, başarı seni bekliyor!"
         };
         
-        DailyQuote = _context.MotivationQuotes.OrderBy(q => Guid.NewGuid()).Select(q => q.Text).FirstOrDefault() 
+        DailyQuote = await _context.MotivationQuotes.OrderBy(q => Guid.NewGuid()).Select(q => q.Text).FirstOrDefaultAsync() 
                     ?? turkishQuotes[new Random().Next(turkishQuotes.Count)];
 
         var userId = GetCurrentUserId();
@@ -107,7 +107,8 @@ public class IndexModel : BasePageModel
             .ToListAsync();
         
         var progressByLessonId = userProgress
-            .GroupBy(utp => utp.Topic.LessonId)
+            .Where(utp => utp.Topic != null)
+            .GroupBy(utp => utp.Topic!.LessonId)
             .ToDictionary(g => g.Key, g => g.ToList());
         
         var weekStart = DateTime.Today.AddDays(-7);
