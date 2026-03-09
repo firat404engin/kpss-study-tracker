@@ -1,0 +1,178 @@
+@page
+@model KPSSStudyTracker.Pages.StudyScheduler.CreateModel
+@{
+    ViewData["Title"] = "Çalışma Programı Oluştur";
+}
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 dark:bg-blue-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-200 dark:bg-indigo-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl mb-6 shadow-lg">
+                <i class="bi bi-calendar-check text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+                Otomatik Çalışma Programı Oluştur
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                Sınav tarihine kadar kişiselleştirilmiş çalışma programınızı oluşturun
+            </p>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="mb-6 p-4 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-xl">
+                <div class="flex items-center">
+                    <i class="bi bi-exclamation-triangle-fill text-red-600 dark:text-red-400 mr-3 text-xl"></i>
+                    <span class="text-red-800 dark:text-red-300">@Model.ErrorMessage</span>
+                </div>
+            </div>
+        }
+
+        <form method="post" class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700/30 overflow-hidden">
+            <div class="p-8 space-y-8">
+                
+                <!-- Sınav Tarihi ve Çalışma Saatleri -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Sınav Tarihi -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            <i class="bi bi-calendar-event mr-2 text-blue-500"></i>Sınav Tarihi
+                        </label>
+                        <input type="date" asp-for="Input.ExamDate" value="@Model.ExamDate.ToString("yyyy-MM-dd")"
+                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all" />
+                        <span asp-validation-for="Input.ExamDate" class="text-red-500 text-sm"></span>
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Kalan gün: <span class="font-bold">@((Model.ExamDate - DateTime.Today).Days)</span>
+                        </p>
+                    </div>
+
+                    <!-- Günlük Çalışma Saati -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            <i class="bi bi-clock mr-2 text-green-500"></i>Günlük Çalışma Saati
+                        </label>
+                        <input type="number" asp-for="Input.DailyHours" min="1" max="16" step="0.5" value="8"
+                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all" />
+                        <span asp-validation-for="Input.DailyHours" class="text-red-500 text-sm"></span>
+                    </div>
+
+                    <!-- Saatlik Konu Sayısı -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            <i class="bi bi-speedometer2 mr-2 text-purple-500"></i>Saatlik Konu Sayısı
+                        </label>
+                        <input type="number" asp-for="Input.TopicsPerHour" min="1" max="10" value="2"
+                               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-white focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all" />
+                        <span asp-validation-for="Input.TopicsPerHour" class="text-red-500 text-sm"></span>
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Ortalama bir konu için harcayacağınız süre
+                        </p>
+                    </div>
+
+                    <!-- Tamamlanmış Konuları Hariç Tut -->
+                    <div class="flex items-center">
+                        <input type="checkbox" asp-for="Input.ExcludeCompletedTopics" checked
+                               class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                        <label asp-for="Input.ExcludeCompletedTopics" class="ml-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            Tamamladığım konuları hariç tut
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Çalışma Günleri -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                        <i class="bi bi-calendar-week mr-2 text-orange-500"></i>Çalışma Günleri
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
+                        @{
+                            var days = new[] { 
+                                new { Value = 1, Name = "Pazartesi", Short = "Pzt" },
+                                new { Value = 2, Name = "Salı", Short = "Sal" },
+                                new { Value = 3, Name = "Çarşamba", Short = "Çar" },
+                                new { Value = 4, Name = "Perşembe", Short = "Per" },
+                                new { Value = 5, Name = "Cuma", Short = "Cum" },
+                                new { Value = 6, Name = "Cumartesi", Short = "Cmt" },
+                                new { Value = 7, Name = "Pazar", Short = "Paz" }
+                            };
+                        }
+                        @foreach (var day in days)
+                        {
+                            <label class="relative flex items-center justify-center p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all group">
+                                <input type="checkbox" name="Input.SelectedDays" value="@day.Value" checked
+                                       class="absolute opacity-0 peer" />
+                                <div class="text-center peer-checked:text-blue-600 dark:peer-checked:text-blue-400 transition-colors">
+                                    <div class="font-bold text-sm">@day.Short</div>
+                                    <div class="text-xs mt-1 hidden sm:block">@day.Name</div>
+                                </div>
+                                <div class="absolute inset-0 rounded-xl bg-blue-500/10 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                <!-- Dersler -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">
+                        <i class="bi bi-book mr-2 text-red-500"></i>Çalışmak İstediğiniz Dersler
+                    </label>
+                    <div class="space-y-4">
+                        @foreach (var lesson in Model.AvailableLessons)
+                        {
+                            var remainingTopics = lesson.Topics.Count(t => !t.IsCompleted);
+                            var completedTopics = lesson.Topics.Count(t => t.IsCompleted);
+                            var progressPercent = lesson.Topics.Any() ? (completedTopics * 100 / lesson.Topics.Count) : 0;
+
+                            <label class="block p-4 rounded-xl border-2 border-gray-200 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all group">
+                                <div class="flex items-start">
+                                    <input type="checkbox" name="Input.SelectedLessonIds" value="@lesson.LessonId" checked
+                                           class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 mt-1 mr-3" />
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-gray-900 dark:text-white mb-2">@lesson.LessonName</div>
+                                        <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <span><i class="bi bi-list-ul mr-1"></i>@lesson.Topics.Count konu</span>
+                                            <span><i class="bi bi-check-circle mr-1"></i>@completedTopics tamamlandı</span>
+                                            <span class="text-blue-600 dark:text-blue-400 font-semibold">@remainingTopics kalan</span>
+                                        </div>
+                                        <div class="mt-2 w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                            <div class="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all" style="width: @progressPercent%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        }
+                    </div>
+                </div>
+
+                @if (!Model.AvailableLessons.Any())
+                {
+                    <div class="text-center py-8">
+                        <i class="bi bi-inbox text-gray-400 text-5xl mb-4"></i>
+                        <p class="text-gray-600 dark:text-gray-400">Henüz ders ve konu eklenmemiş</p>
+                        <a href="/Lessons" class="inline-block mt-4 text-blue-600 hover:underline">Ders Ekle</a>
+                    </div>
+                }
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="bg-gray-50 dark:bg-slate-900/50 px-8 py-6 border-t border-gray-200 dark:border-slate-700 flex flex-col sm:flex-row gap-4 justify-between items-center">
+                <a href="/" class="w-full sm:w-auto px-6 py-3 bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-600 transition-all text-center font-semibold">
+                    <i class="bi bi-arrow-left mr-2"></i>İptal
+                </a>
+                <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="bi bi-magic mr-2"></i>Programı Oluştur
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

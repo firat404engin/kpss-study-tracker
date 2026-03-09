@@ -1,0 +1,263 @@
+@page
+@model KPSSStudyTracker.Pages.Exams.CreateModel
+@{
+    ViewData["Title"] = "Yeni Deneme";
+}
+
+<!-- Modern Gradient Background -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Floating Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 dark:bg-blue-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 dark:bg-purple-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="absolute top-40 left-1/2 w-60 h-60 bg-pink-200 dark:bg-pink-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse" style="animation-delay: 4s;"></div>
+    </div>
+
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Modern Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-6 shadow-lg">
+                <i class="bi bi-clipboard-plus-fill text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                Yeni Deneme Sınavı Ekle
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                Deneme sınavı sonuçlarınızı kaydedin ve KPSS P3 puanınızı hesaplayın
+            </p>
+        </div>
+
+        <!-- Modern Glass Card -->
+        <div class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700/30 p-8">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="mb-8 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 border border-red-200/50 dark:border-red-700/50 rounded-2xl p-6 backdrop-blur-sm">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mr-4">
+                            <i class="bi bi-exclamation-triangle text-red-600 dark:text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-red-800 dark:text-red-200 font-semibold text-lg">Hata!</h4>
+                            <div asp-validation-summary="All" class="text-red-700 dark:text-red-300 text-sm mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+        
+            <form method="post" class="space-y-8">
+                @Html.AntiForgeryToken()
+                
+                <!-- Basic Info Section -->
+                <div class="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-2xl p-6 border border-blue-100/50 dark:border-blue-800/30">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-3">
+                            <i class="bi bi-info-circle-fill text-white text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Temel Bilgiler</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <i class="bi bi-calendar3 mr-2 text-blue-500"></i>Tarih <span class="text-red-500">*</span>
+                            </label>
+                            <input asp-for="Input.Date" 
+                                   type="date" 
+                                   class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <i class="bi bi-pencil-square mr-2 text-purple-500"></i>Deneme Adı <span class="text-red-500">*</span>
+                            </label>
+                            <input asp-for="Input.Name" 
+                                   class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" 
+                                   placeholder="Örn: KPSS Deneme 1" />
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            <i class="bi bi-sticky-fill mr-2 text-green-500"></i>Notlar
+                        </label>
+                        <textarea asp-for="Input.Notes" 
+                                  rows="3"
+                                  class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md resize-none" 
+                                  placeholder="Deneme hakkında notlarınız..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Lesson Results Section -->
+                <div class="bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-900/10 dark:to-teal-900/10 rounded-2xl p-6 border border-emerald-100/50 dark:border-emerald-800/30">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
+                            <i class="bi bi-bar-chart-fill text-white text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Ders Bazlı Sonuçlar</h3>
+                    </div>
+                
+                    @if (Model.LessonResults.Any())
+                    {
+                        <div class="space-y-6">
+                            @for (int i = 0; i < Model.LessonResults.Count; i++)
+                            {
+                                <div class="bg-white/60 dark:bg-slate-700/60 backdrop-blur-sm rounded-2xl p-6 border border-white/30 dark:border-slate-600/30 shadow-lg hover:shadow-xl transition-all duration-300">
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-bold text-gray-800 dark:text-gray-200">
+                                                <i class="bi bi-book-fill mr-2 text-indigo-500"></i>@Model.LessonResults[i].LessonName
+                                            </label>
+                                            <input type="hidden" name="LessonResults[@i].LessonId" value="@Model.LessonResults[i].LessonId" />
+                                            <input type="hidden" name="LessonResults[@i].LessonName" value="@Model.LessonResults[i].LessonName" />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                <i class="bi bi-check-circle-fill mr-2 text-green-500"></i>Doğru Cevap
+                                            </label>
+                                            <input name="LessonResults[@i].Correct" 
+                                                   type="number" 
+                                                   min="0" 
+                                                   value="@Model.LessonResults[i].Correct"
+                                                   oninput="recalc()"
+                                                   class="lesson-correct w-full px-4 py-3 bg-white/80 dark:bg-slate-600/80 border border-gray-200/50 dark:border-slate-500/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" 
+                                                   placeholder="0" data-lesson-name="@Model.LessonResults[i].LessonName" />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                <i class="bi bi-x-circle-fill mr-2 text-red-500"></i>Yanlış Cevap
+                                            </label>
+                                            <input name="LessonResults[@i].Wrong" 
+                                                   type="number" 
+                                                   min="0" 
+                                                   value="@Model.LessonResults[i].Wrong"
+                                                   oninput="recalc()"
+                                                   class="lesson-wrong w-full px-4 py-3 bg-white/80 dark:bg-slate-600/80 border border-gray-200/50 dark:border-slate-500/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" 
+                                                   placeholder="0" data-lesson-name="@Model.LessonResults[i].LessonName" />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                <i class="bi bi-calculator-fill mr-2 text-blue-500"></i>Net
+                                            </label>
+                                            <div class="w-full px-4 py-3 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-xl text-gray-900 dark:text-white font-bold flex items-center justify-center text-lg shadow-inner lesson-net" id="net-@Model.LessonResults[i].LessonName.Replace(" ", "")" data-lesson-name="@Model.LessonResults[i].LessonName">0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                else
+                {
+                    <div class="bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <i class="bi bi-exclamation-triangle text-yellow-600 dark:text-yellow-400 mr-2"></i>
+                            <p class="text-yellow-800 dark:text-yellow-200">
+                                Henüz ders eklenmemiş. Önce <a href="/Lessons/Create" class="underline font-medium">ders ekleyin</a>.
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+
+                <!-- Live Summary Section -->
+                <div class="bg-gradient-to-r from-purple-50/50 to-pink-50/50 dark:from-purple-900/10 dark:to-pink-900/10 rounded-2xl p-6 border border-purple-100/50 dark:border-purple-800/30">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mr-3">
+                            <i class="bi bi-calculator-fill text-white text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Canlı Hesaplama</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30 rounded-2xl p-6 text-center shadow-lg">
+                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="bi bi-graph-up-arrow text-white text-xl"></i>
+                            </div>
+                            <div class="text-sm font-semibold text-purple-700 dark:text-purple-300 mb-2">Toplam GY Neti</div>
+                            <div id="gyNet" class="text-3xl font-bold text-purple-800 dark:text-purple-200">0</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/30 dark:to-blue-800/30 rounded-2xl p-6 text-center shadow-lg">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="bi bi-bar-chart-line text-white text-xl"></i>
+                            </div>
+                            <div class="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-2">Toplam GK Neti</div>
+                            <div id="gkNet" class="text-3xl font-bold text-blue-800 dark:text-blue-200">0</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 rounded-2xl p-6 text-center shadow-lg">
+                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="bi bi-pie-chart-fill text-white text-xl"></i>
+                            </div>
+                            <div class="text-sm font-semibold text-green-700 dark:text-green-300 mb-2">Genel Toplam Net</div>
+                            <div id="totalNet" class="text-3xl font-bold text-green-800 dark:text-green-200">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 rounded-2xl p-6 text-center shadow-lg border border-amber-200/50 dark:border-amber-700/30">
+                        <div class="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="bi bi-trophy-fill text-white text-2xl"></i>
+                        </div>
+                        <div class="text-lg font-semibold text-amber-700 dark:text-amber-300 mb-2">Tahmini KPSS P3 Puanı</div>
+                        <div id="p3Score" class="text-4xl font-extrabold text-amber-800 dark:text-amber-200 mb-3">50</div>
+                        <div class="text-xs text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-900/20 rounded-lg px-3 py-2">
+                            Formül: 50 + (Türkçe×0.5 + Mat×0.5 + Tarih×0.3 + Coğ×0.2 + Vat×0.15 + Güncel×0.05)
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Actions -->
+                <div class="flex justify-end space-x-4 pt-8">
+                    <a href="/Exams" class="group px-6 py-3 bg-white/60 dark:bg-slate-700/60 border border-gray-200/50 dark:border-slate-600/50 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/80 transition-all duration-200 backdrop-blur-sm shadow-lg hover:shadow-xl">
+                        <i class="bi bi-x-circle mr-2 group-hover:scale-110 transition-transform"></i>İptal
+                    </a>
+                    <button type="submit" class="group px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i class="bi bi-check-circle mr-2 group-hover:scale-110 transition-transform"></i>Kaydet
+                    </button>
+                </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function parseNum(v){ const n = parseFloat(v); return isNaN(n) ? 0 : n; }
+    function recalc() {
+        const rows = document.querySelectorAll('.lesson-net');
+        let gy = 0, gk = 0, totalWeightedScore = 0;
+        
+        rows.forEach(div => {
+            const name = div.getAttribute('data-lesson-name');
+            const correct = parseNum(document.querySelector(`.lesson-correct[data-lesson-name="${name}"]`)?.value);
+            const wrong = parseNum(document.querySelector(`.lesson-wrong[data-lesson-name="${name}"]`)?.value);
+            const net = Math.round((correct - wrong / 4) * 100) / 100;
+            div.textContent = net;
+            
+            const lower = (name || '').toLowerCase();
+            const isGY = lower.includes('türkçe') || lower.includes('matematik') || lower.includes('geometri');
+            const isGK = lower.includes('tarih') || lower.includes('coğrafya') || lower.includes('vatandaşlık') || lower.includes('güncel');
+            
+            if (isGY) gy += net; 
+            else if (isGK) gk += net;
+            
+            // KPSS P3 gerçek katsayılarına göre hesaplama
+            let coefficient = 0;
+            if (lower.includes('türkçe')) coefficient = 0.5;
+            else if (lower.includes('matematik')) coefficient = 0.5;
+            else if (lower.includes('tarih')) coefficient = 0.3;
+            else if (lower.includes('coğrafya')) coefficient = 0.2;
+            else if (lower.includes('vatandaşlık')) coefficient = 0.15;
+            else if (lower.includes('güncel')) coefficient = 0.05;
+            
+            totalWeightedScore += net * coefficient;
+        });
+        
+        const total = gy + gk;
+        // KPSS P3: 50 + (Ağırlıklı Toplam Net) - Gerçek katsayılarla
+        const p3 = Math.round((50 + totalWeightedScore) * 100) / 100;
+        
+        document.getElementById('gyNet').textContent = Math.round(gy * 100) / 100;
+        document.getElementById('gkNet').textContent = Math.round(gk * 100) / 100;
+        document.getElementById('totalNet').textContent = Math.round(total * 100) / 100;
+        document.getElementById('p3Score').textContent = p3;
+    }
+    document.addEventListener('input', (e) => {
+        if (e.target.matches('.lesson-correct') || e.target.matches('.lesson-wrong')) recalc();
+    });
+    recalc();
+</script>

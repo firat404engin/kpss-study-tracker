@@ -1,0 +1,128 @@
+@page
+@model KPSSStudyTracker.Pages.Todo.IndexModel
+@{
+    ViewData["Title"] = "Günlük Yapılacaklar";
+}
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <form id="anti" method="post" class="hidden">@Html.AntiForgeryToken()</form>
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl mb-3 shadow-md">
+                <i class="bi bi-check2-square text-white text-xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Günlük Yapılacaklar</h1>
+        </div>
+
+        <div class="backdrop-blur bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/30 p-4 mb-6">
+            <form method="get" class="flex items-center gap-3">
+                <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Tarih</label>
+                <input type="date" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" class="px-3 py-2 rounded-lg bg-white/70 dark:bg-slate-700/70 border dark:border-slate-600/50" />
+                <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg">Göster</button>
+            </form>
+        </div>
+
+        <div class="backdrop-blur bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/30 p-4 mb-6">
+            <form method="post" asp-page-handler="Add" class="flex items-center gap-2">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+                <input type="text" name="title" placeholder="Yeni görev ekle..." class="flex-1 px-3 py-2 rounded-lg bg-white/70 dark:bg-slate-700/70 border dark:border-slate-600/50" />
+                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg">Ekle</button>
+            </form>
+        </div>
+
+        <div class="space-y-4">
+            @foreach (var item in Model.Items)
+            {
+                <div class="flex items-start gap-3 p-3 rounded-xl border border-slate-200/70 dark:border-slate-600/40 bg-white/80 dark:bg-slate-700/60 shadow-sm hover:shadow-md transition duration-200">
+                    <div class="mt-1">
+                        <span id="status-@item.Id" class="text-xs font-semibold px-2 py-1 rounded-full @(item.IsCompleted ? "bg-emerald-100 text-emerald-700" : "bg-yellow-100 text-yellow-700")">@(item.IsCompleted ? "Tamamlandı" : "Yapılacak")</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2">
+                            <div id="check-@item.Id" class="w-5 h-5 rounded-full flex items-center justify-center @(item.IsCompleted ? "bg-emerald-500" : "bg-slate-300") transition">
+                                <i class="bi bi-check-lg text-white text-[10px] @(item.IsCompleted ? "opacity-100" : "opacity-0")"></i>
+                            </div>
+                            <div id="title-@item.Id" class="text-sm font-medium @(item.IsCompleted ? "line-through text-gray-500" : "text-gray-900 dark:text-white")">@item.Title</div>
+                        </div>
+                        <div class="mt-2">
+                            <textarea id="notes-@item.Id" class="w-full text-sm px-3 py-2 rounded-lg bg-white/70 dark:bg-slate-700/60 border dark:border-slate-600/40 focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Not Ekle (opsiyonel)">@item.Notes</textarea>
+                            <div class="mt-2 flex gap-2">
+                                <button type="button" class="px-3 py-2 text-sm bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg hover:from-emerald-700 hover:to-teal-700 transition" onclick="saveAndComplete(@item.Id)">Kaydet</button>
+                                <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Silinsin mi?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="px-3 py-2 text-sm bg-gradient-to-r from-rose-600 to-red-600 text-white rounded-lg hover:from-rose-700 hover:to-red-700">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (!Model.Items.Any())
+            {
+                <div class="p-8 text-center bg-white/80 dark:bg-slate-800/80 rounded-2xl border dark:border-slate-700/50">Bu tarih için görev yok. Yukarıdan ekleyin.</div>
+            }
+        </div>
+    </div>
+
+<script>
+async function toggleTodo(id, isCompleted) {
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    const res = await fetch('/Todo?handler=Toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+        body: JSON.stringify({ id, isCompleted })
+    });
+    if (res.ok) {
+        const title = document.getElementById('title-' + id);
+        if (!title) return;
+        if (isCompleted) {
+            title.classList.add('line-through', 'text-gray-500');
+        } else {
+            title.classList.remove('line-through', 'text-gray-500');
+        }
+    }
+}
+async function saveNotes(id) {
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    const notes = document.getElementById('notes-' + id).value;
+    const res = await fetch('/Todo?handler=UpdateNotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+        body: JSON.stringify({ id, notes })
+    });
+    if (res.ok) {
+        // lightweight saved feedback
+        const btn = event?.target;
+        if (btn) {
+            const original = btn.textContent;
+            btn.textContent = 'Kaydedildi';
+            setTimeout(() => btn.textContent = original, 1200);
+        }
+    }
+}
+
+async function saveAndComplete(id) {
+    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+    const notes = document.getElementById('notes-' + id).value;
+    const res = await fetch('/Todo?handler=UpdateNotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+        body: JSON.stringify({ id, notes, complete: true })
+    });
+    if (res.ok) {
+        const title = document.getElementById('title-' + id);
+        const check = document.getElementById('check-' + id);
+        const status = document.getElementById('status-' + id);
+        if (title) { title.classList.add('line-through','text-gray-500'); }
+        if (check) {
+            check.classList.remove('bg-slate-300');
+            check.classList.add('bg-emerald-500');
+            const icon = check.querySelector('i');
+            if (icon) icon.classList.remove('opacity-0');
+        }
+        if (status) { status.textContent = 'Tamamlandı'; status.className = 'text-xs font-semibold px-2 py-1 rounded-full bg-emerald-100 text-emerald-700'; }
+    }
+}
+    </script>
+

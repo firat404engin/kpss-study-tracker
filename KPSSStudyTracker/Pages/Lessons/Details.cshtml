@@ -1,0 +1,314 @@
+@page "{id:int}"
+@model KPSSStudyTracker.Pages.Lessons.DetailsModel
+@{
+    ViewData["Title"] = "Ders Detayı";
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <i class="bi bi-book-fill text-primary-600 mr-2"></i>@Model.LessonName
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400">Konularınızı yönetin ve ilerlemenizi takip edin</p>
+        </div>
+        <a href="/Lessons" class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <i class="bi bi-arrow-left mr-2"></i>Geri
+        </a>
+    </div>
+
+    <!-- Add Topic Form - Sadece Admin -->
+    @if (Model.IsAdmin)
+    {
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <i class="bi bi-plus-circle-fill text-green-600 mr-2"></i>Yeni Konu Ekle
+        </h3>
+        <form method="post" asp-page-handler="AddTopic" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konu Başlığı</label>
+                    <input name="Title" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="Konu başlığını girin" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kaynak</label>
+                    <input name="Source" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="Kaynak bilgisi" />
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Çözülen Soru</label>
+                    <input name="SolvedQuestions" 
+                           type="number" 
+                           min="0" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="0" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Doğru Cevap</label>
+                    <input name="CorrectAnswers" 
+                           type="number" 
+                           min="0" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="0" />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Yanlış Cevap</label>
+                    <input name="WrongAnswers" 
+                           type="number" 
+                           min="0" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="0" />
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notlar</label>
+                <textarea name="Notes" rows="2"
+                          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                          placeholder="Konu hakkında notlarınız"></textarea>
+            </div>
+            
+            <div class="flex justify-end">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition-colors">
+                    <i class="bi bi-plus-circle mr-2"></i>Konu Ekle
+                </button>
+            </div>
+        </form>
+    </div>
+    }
+
+    <!-- Topics Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                <i class="bi bi-list-ul text-primary-600 mr-2"></i>Konular
+            </h3>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Konu Başlığı
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Durum
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Soru
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Doğru
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Yanlış
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Doğruluk %
+                        </th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            İşlemler
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach (var item in Model.Topics)
+                    {
+                        var t = item.Topic;
+                        var p = item.Progress;
+                        var solved = p?.SolvedQuestions ?? 0;
+                        var correct = p?.CorrectAnswers ?? 0;
+                        var wrong = p?.WrongAnswers ?? 0;
+                        var completed = p?.Completed ?? false;
+                        var source = t.Source ?? ""; // Source is global in Topic
+                        var notes = t.Notes ?? ""; // Notes is global in Topic
+                        var accuracy = p?.AccuracyPct ?? 0;
+                        
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-gray-900 dark:text-white">@t.Title</div>
+                                @if (!string.IsNullOrEmpty(source) || !string.IsNullOrEmpty(notes))
+                                {
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                        @if (!string.IsNullOrEmpty(source))
+                                        {
+                                            <span><i class="bi bi-book mr-1"></i>@source</span>
+                                        }
+                                        @if (!string.IsNullOrEmpty(notes))
+                                        {
+                                            <span class="ml-2"><i class="bi bi-sticky mr-1"></i>@notes</span>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                @if (completed)
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                        <i class="bi bi-check-circle-fill mr-1"></i>Tamamlandı
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                        <i class="bi bi-clock-fill mr-1"></i>Devam
+                                    </span>
+                                }
+                            </td>
+                            <td class="px-6 py-4 text-center text-sm text-gray-900 dark:text-white">@solved</td>
+                            <td class="px-6 py-4 text-center text-sm text-green-600 font-medium">@correct</td>
+                            <td class="px-6 py-4 text-center text-sm text-red-600 font-medium">@wrong</td>
+                            <td class="px-6 py-4 text-center text-sm font-medium @(accuracy >= 70 ? "text-green-600" : accuracy >= 50 ? "text-yellow-600" : "text-red-600")">
+                                %@accuracy
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <div class="flex justify-center space-x-1">
+                                    @if (Model.IsAdmin)
+                                    {
+                                    <!-- Düzenle Butonu - Sadece Admin -->
+                                    <button onclick="openEditModal(@t.Id, '@Html.Raw(t.Title.Replace("'", "\\'"))', @solved, @correct, @wrong, '@Html.Raw(source.Replace("'", "\\'"))', '@Html.Raw(notes.Replace("'", "\\'"))')" 
+                                            class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors p-1" 
+                                            title="Düzenle">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </button>
+                                    }
+                                    
+                                    <!-- Durum Değiştir Butonu -->
+                                    <form method="post" asp-page-handler="Toggle" class="inline">
+                                        <input type="hidden" name="topicId" value="@t.Id" />
+                                        <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors p-1" 
+                                                title="@(completed ? "Tamamlanmadı olarak işaretle" : "Tamamlandı olarak işaretle")">
+                                            <i class="bi bi-toggle-@(completed ? "on" : "off")"></i>
+                                        </button>
+                                    </form>
+                                    
+                                    <!-- Sil Butonu -->
+                                    <form method="post" asp-page-handler="DeleteTopic" class="inline" 
+                                          onsubmit="return confirm('Bu konunun ilerlemesini silmek istediğinizden emin misiniz?')">
+                                        <input type="hidden" name="topicId" value="@t.Id" />
+                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors p-1" 
+                                                title="İlerlemeyi Sil">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        @if (!Model.Topics.Any())
+        {
+            <div class="text-center py-12">
+                <i class="bi bi-book text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">Henüz konu eklenmemiş</h3>
+                <p class="text-gray-500 dark:text-gray-400">Yukarıdaki formu kullanarak ilk konunuzu ekleyin</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Düzenleme Modal - Sadece Admin -->
+@if (Model.IsAdmin)
+{
+<div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                    <i class="bi bi-pencil-fill text-blue-600 mr-2"></i>Konu Düzenle
+                </h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            
+            <form id="editForm" method="post" asp-page-handler="UpdateTopic">
+                <input type="hidden" id="editTopicId" name="topicId" />
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konu Başlığı</label>
+                    <input id="editTitle" name="Title" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           required />
+                </div>
+                
+                <div class="grid grid-cols-3 gap-3 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Çözülen</label>
+                        <input id="editSolvedQuestions" name="SolvedQuestions" type="number" min="0" 
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Doğru</label>
+                        <input id="editCorrectAnswers" name="CorrectAnswers" type="number" min="0" 
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Yanlış</label>
+                        <input id="editWrongAnswers" name="WrongAnswers" type="number" min="0" 
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" />
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kaynak</label>
+                    <input id="editSource" name="Source" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" />
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notlar</label>
+                    <textarea id="editNotes" name="Notes" rows="3"
+                              class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"></textarea>
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" onclick="closeEditModal()" 
+                            class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg transition-colors">
+                        <i class="bi bi-x-circle mr-2"></i>İptal
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                        <i class="bi bi-save mr-2"></i>Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function openEditModal(id, title, solvedQuestions, correctAnswers, wrongAnswers, source, notes) {
+    document.getElementById('editTopicId').value = id;
+    document.getElementById('editTitle').value = title;
+    document.getElementById('editSolvedQuestions').value = solvedQuestions;
+    document.getElementById('editCorrectAnswers').value = correctAnswers;
+    document.getElementById('editWrongAnswers').value = wrongAnswers;
+    document.getElementById('editSource').value = source;
+    document.getElementById('editNotes').value = notes;
+    document.getElementById('editModal').classList.remove('hidden');
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.add('hidden');
+}
+
+// Modal dışına tıklandığında kapat
+document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeEditModal();
+    }
+});
+</script>
+}

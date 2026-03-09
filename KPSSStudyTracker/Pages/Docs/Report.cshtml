@@ -1,0 +1,101 @@
+@page "/Docs/Report"
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KPSS Study Tracker - Teknik Doküman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @@media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 text-slate-800">
+    <div class="max-w-4xl mx-auto p-6 md:p-10">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">KPSS Study Tracker - Teknik Doküman</h1>
+            <button class="no-print px-4 py-2 rounded-lg bg-emerald-600 text-white shadow hover:bg-emerald-700" onclick="window.print()">
+                <i class="bi bi-filetype-pdf mr-1"></i> PDF olarak kaydet
+            </button>
+        </div>
+
+        <div class="space-y-8 text-[15px] leading-7">
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Proje Tanımı</h2>
+                <p>KPSS Study Tracker, KPSS’ye hazırlanan adayların günlük/haftalık çalışma hedeflerini planlamasını, ilerlemesini izlemesini ve sınav deneme süresi yönetimini yapmasını sağlayan bir web uygulamasıdır. Uygulama; konu listeleri, günlük yapılacaklar (Todo), haftalık hedef ilerlemeleri, gösterge paneli, tam ekran KPSS deneme zamanlayıcısı (150 dk) ve modern bir kullanıcı arayüzü sunar.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Kullanılan Teknolojiler</h2>
+                <ul class="list-disc ml-6">
+                    <li>.NET 8, ASP.NET Core Razor Pages</li>
+                    <li>Entity Framework Core (SQL Server, Code First + Migrations)</li>
+                    <li>Tailwind CSS (CDN), Bootstrap Icons</li>
+                    <li>Chart.js (grafikler)</li>
+                    <li>Cookie Authentication</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Veritabanı Yapısı</h2>
+                <p>Tür: SQL Server. Türkçe tablo isimleri kullanılır.</p>
+                <ul class="list-disc ml-6">
+                    <li><b>Kullanicilar</b>(Id, Username, PasswordHash)</li>
+                    <li><b>Dersler</b>(Id, Name)</li>
+                    <li><b>Konular</b>(Id, LessonId, Title, Source, Notes, Completed, SolvedQuestions, CorrectAnswers, WrongAnswers)</li>
+                    <li><b>Denemeler</b>(Id, Name, Date), <b>DenemeSonuclari</b>(MockExamId, LessonId, Correct, Wrong)</li>
+                    <li><b>HaftalikPlanlar</b>, <b>GunlukPlanlar</b>, <b>PlanKonulari</b> (dinamik planlama)</li>
+                    <li><b>Yapilacaklar</b>(Id, Date, Title, Notes, IsCompleted, CreatedAt, CompletedAt)</li>
+                </ul>
+                <p class="mt-2">İlişkiler: Lesson-(1..n)-Topic, WeeklyPlan-(1..n)-DailyPlan, DailyPlan-(1..n)-PlanTopic, PlanTopic-(n..1)-Topic.</p>
+                <p class="mt-2">Örnek Sorgu: <code class="bg-slate-100 px-2 py-0.5 rounded">SELECT COUNT(*) FROM Konular WHERE Completed=1;</code></p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Projenin Başlangıcı ve Gelişim Süreci</h2>
+                <ul class="list-disc ml-6 space-y-1">
+                    <li>Razor Pages temel iskelet, EF Core ve seed verileri kuruldu.</li>
+                    <li>Önce statik plan, sonra dinamik haftalık plan mimarisi eklendi.</li>
+                    <li>İstek doğrultusunda StudyPlan kaldırılarak Todo merkezli akışa geçildi.</li>
+                    <li>Gösterge paneli modernize edildi; haftalık ilerleme ve günlük görevler taşındı.</li>
+                    <li>Pomodoro kaldırıldı; yerine tam ekran <b>KPSS Deneme Zamanlayıcısı</b> (150 dk) geliştirildi.</li>
+                    <li>Navbar/footer glassmorphism + responsive tasarıma alındı.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Kod Yapısı</h2>
+                <ul class="list-disc ml-6">
+                    <li><b>Pages/Index</b>: Gösterge paneli (sayaç, motivasyon, haftalık ilerleme, bugünün görevleri).</li>
+                    <li><b>Pages/Todo</b>: Günlük görev listesi, tamamla, not kaydet, sil.</li>
+                    <li><b>Pages/ExamTimer</b>: Tam ekran 150 dk zamanlayıcı (ESC ile çıkış).</li>
+                    <li><b>Models/DomainModels</b>, <b>Data/AppDbContext</b>, <b>Data/SeedData</b>, <b>Migrations/</b>.</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Kullanıcı Arayüzü</h2>
+                <p>Tailwind CSS ile minimal, responsive, göz yormayan bir arayüz; Bootstrap Icons ve Chart.js ile tamamlanır. Karanlık/Aydınlık tema desteklenir.</p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-bold text-slate-900 mb-2">Sonuç ve Gelecekteki Geliştirmeler</h2>
+                <ul class="list-disc ml-6 space-y-1">
+                    <li>Mevcut: Todo, haftalık ilerleme, göstergeler ve tam ekran zamanlayıcı.</li>
+                    <li>Gelecek: Haftalık hedefler, streak/ısı haritası, önerilen çalışma, zamanlayıcı sonrası sonuç kaydı, PWA.</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

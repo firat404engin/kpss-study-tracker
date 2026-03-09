@@ -1,0 +1,363 @@
+@page
+@model KPSSStudyTracker.Pages.StudyScheduler.ViewModel
+@{
+    ViewData["Title"] = "Çalışma Programım";
+}
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-6">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6">
+        
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    📚 Çalışma Programım
+                </h1>
+                @if (Model.ActivePlan != null)
+                {
+                    <a href="/StudyScheduler/Create" class="px-3 py-1.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all text-xs font-semibold shadow-md">
+                        <i class="bi bi-plus-circle mr-1"></i>Yeni
+                    </a>
+                }
+            </div>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="mb-4 p-3 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 rounded-lg">
+                <div class="flex items-center text-sm">
+                    <i class="bi bi-check-circle-fill text-green-600 dark:text-green-400 mr-2"></i>
+                    <span class="text-green-800 dark:text-green-300">@TempData["SuccessMessage"]</span>
+                </div>
+            </div>
+        }
+
+        @if (Model.ActivePlan == null)
+        {
+            <!-- Boş Durum -->
+            <div class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl p-10 text-center">
+                <i class="bi bi-calendar-x text-gray-400 text-5xl mb-3"></i>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Henüz çalışma programınız yok</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-5 max-w-md mx-auto text-sm">
+                    Otomatik çalışma programı oluşturarak sınava hazırlığınızı planlayın
+                </p>
+                <a href="/StudyScheduler/Create" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl text-sm">
+                    <i class="bi bi-plus-circle-fill mr-2"></i>Program Oluştur
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- İstatistikler - Kompakt -->
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-blue-600 dark:text-blue-400">@Model.Stats.TotalWeeks</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">Hafta</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-green-600 dark:text-green-400">@Model.Stats.TotalDays</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">Gün</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-purple-600 dark:text-purple-400">@Model.Stats.TotalTopics</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">Konu</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-orange-600 dark:text-orange-400">@Model.Stats.CompletedTopics</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">Tamam</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-indigo-600 dark:text-indigo-400">@Math.Round(Model.Stats.TotalHours, 0)</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">Saat</div>
+                </div>
+                <div class="bg-white/80 dark:bg-slate-800/80 rounded-lg shadow-md p-2 backdrop-blur-xl border border-white/20">
+                    <div class="text-lg font-bold text-pink-600 dark:text-pink-400">%@Model.Stats.ProgressPercent</div>
+                    <div class="text-[10px] text-gray-600 dark:text-gray-400">İlerleme</div>
+                </div>
+            </div>
+
+            <!-- Haftalık Navigasyon - Dengeli -->
+            <div class="mb-5">
+                <div class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-xl shadow-lg border border-white/20 p-4">
+                    <div class="flex items-center justify-between">
+                        <!-- Önceki Hafta -->
+                        @if (Model.HasPreviousWeek)
+                        {
+                            <a href="?CurrentWeek=@(Model.CurrentWeek - 1)" 
+                               class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-lg font-semibold transition-all shadow-md text-sm">
+                                <i class="bi bi-chevron-left"></i>
+                                <span class="hidden sm:inline">Önceki</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <button disabled 
+                                    class="flex items-center gap-2 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-lg font-semibold cursor-not-allowed opacity-50 text-sm">
+                                <i class="bi bi-chevron-left"></i>
+                                <span class="hidden sm:inline">Önceki</span>
+                            </button>
+                        }
+
+                        <!-- Hafta Göstergesi -->
+                        <div class="text-center px-4">
+                            <div class="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                                Hafta @Model.CurrentWeek / @Model.Stats.TotalWeeks
+                            </div>
+                            @if (Model.CurrentWeekSchedule != null)
+                            {
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                    @Model.CurrentWeekSchedule.StartDate.ToString("dd MMM") - @Model.CurrentWeekSchedule.EndDate.ToString("dd MMM yyyy")
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Sonraki Hafta -->
+                        @if (Model.HasNextWeek)
+                        {
+                            <a href="?CurrentWeek=@(Model.CurrentWeek + 1)" 
+                               class="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white rounded-lg font-semibold transition-all shadow-md text-sm">
+                                <span class="hidden sm:inline">Sonraki</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <button disabled 
+                                    class="flex items-center gap-2 px-4 py-2 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-lg font-semibold cursor-not-allowed opacity-50 text-sm">
+                                <span class="hidden sm:inline">Sonraki</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
+                        }
+                    </div>
+
+                    <!-- İlerleme Barı -->
+                    @if (Model.CurrentWeekSchedule != null)
+                    {
+                        var weekProgress = Model.CurrentWeekSchedule.Days.Any() 
+                            ? (Model.CurrentWeekSchedule.Days.Count(d => d.IsCompleted) * 100.0 / Model.CurrentWeekSchedule.Days.Count) 
+                            : 0;
+                        
+                        <div class="mt-3">
+                            <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1.5">
+                                <span>Haftalık İlerleme</span>
+                                <span class="font-bold">%@Math.Round(weekProgress, 0)</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-purple-500 to-pink-600 h-2 rounded-full transition-all duration-500" 
+                                     style="width: @weekProgress%"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Günlük Programlar - Dengeli Boyut -->
+            @if (Model.CurrentWeekSchedule != null)
+            {
+                <div class="space-y-3">
+                    @foreach (var day in Model.CurrentWeekSchedule.Days)
+                    {
+                        var isToday = day.Date.Date == DateTime.Today;
+                        var dayId = $"day-{day.Date:yyyyMMdd}";
+                        
+                        <div class="@(day.IsCompleted ? "bg-green-50/80 dark:bg-green-900/20 border-green-200 dark:border-green-700" : isToday ? "bg-blue-50/80 dark:bg-blue-900/20 border-blue-300 dark:border-blue-600" : "bg-white/80 dark:bg-slate-700/50 border-gray-200 dark:border-slate-600") backdrop-blur-xl border rounded-xl shadow-md transition-all">
+                            
+                            <!-- Gün Başlığı - Dengeli -->
+                            <div class="p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-center min-w-[55px] bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-lg p-2 shadow-md">
+                                            <div class="text-2xl font-bold leading-none">@day.Date.Day</div>
+                                            <div class="text-[9px] uppercase tracking-wide">@day.Date.ToString("MMM")</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-base md:text-lg font-bold text-gray-900 dark:text-white">@day.DayName</div>
+                                            <div class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                                                <span class="flex items-center gap-1">
+                                                    <i class="bi bi-clock"></i>
+                                                    ~@Math.Round(day.EstimatedHours, 1)h
+                                                </span>
+                                                <span>•</span>
+                                                <span class="flex items-center gap-1">
+                                                    <i class="bi bi-book"></i>
+                                                    @day.Lessons.Count ders
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-2 items-center">
+                                        @if (isToday)
+                                        {
+                                            <span class="px-2.5 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">BUGÜN</span>
+                                        }
+                                        @if (day.IsCompleted)
+                                        {
+                                            <span class="px-2.5 py-1 bg-green-500 text-white text-xs font-bold rounded-full flex items-center gap-1">
+                                                <i class="bi bi-check-circle-fill text-xs"></i>
+                                                TAMAM
+                                            </span>
+                                        }
+                                        <!-- Toggle Button -->
+                                        <button onclick="toggleDay('@dayId')" 
+                                                class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
+                                            <i id="@dayId-icon" class="bi bi-chevron-down text-gray-600 dark:text-gray-400"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Dersler - Collapsible Dengeli Boyut -->
+                                <div id="@dayId" class="mt-3 space-y-2.5">
+                                    @foreach (var lesson in day.Lessons)
+                                    {
+                                        var lessonId = $"lesson-{lesson.DailyPlanId}";
+                                        
+                                        <div class="bg-white/70 dark:bg-slate-800/70 rounded-lg border border-gray-200 dark:border-slate-600">
+                                            <!-- Ders Başlığı - Collapsible Dengeli -->
+                                            <button onclick="toggleLesson('@lessonId')" 
+                                                    class="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                                                <div class="flex items-center gap-2.5">
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-md flex items-center justify-center shadow-sm">
+                                                        <i class="bi bi-book-fill text-white text-sm"></i>
+                                                    </div>
+                                                    <div class="text-left">
+                                                        <div class="font-bold text-sm md:text-base text-gray-900 dark:text-white">@lesson.LessonName</div>
+                                                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                                                            @lesson.Topics.Count konu • @lesson.QuestionCount soru • ~@Math.Round(lesson.EstimatedHours, 1)h
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    @if (lesson.IsCompleted)
+                                                    {
+                                                        <span class="text-xs px-2 py-0.5 bg-green-500 text-white rounded-full font-bold">✓</span>
+                                                    }
+                                                    <i id="@lessonId-icon" class="bi bi-chevron-down text-gray-500"></i>
+                                                </div>
+                                            </button>
+
+                                            <!-- Konular - Collapsible Content Dengeli -->
+                                            <div id="@lessonId" class="px-3 pb-3 space-y-1.5">
+                                                @foreach (var topic in lesson.Topics)
+                                                {
+                                                    <form method="post" asp-page-handler="CompleteTopic" 
+                                                          asp-route-topicId="@topic.TopicId" 
+                                                          asp-route-dailyPlanId="@lesson.DailyPlanId"
+                                                          asp-route-currentWeek="@Model.CurrentWeek">
+                                                        <button type="submit" 
+                                                                class="w-full text-left px-3 py-2 rounded border @(topic.IsCompleted ? "border-green-200 bg-green-50/50 dark:border-green-700 dark:bg-green-900/20" : "border-gray-200 bg-white dark:border-slate-600 dark:bg-slate-700") hover:shadow-sm transition-all text-sm">
+                                                            <div class="flex items-center gap-2">
+                                                                @if (topic.IsCompleted)
+                                                                {
+                                                                    <i class="bi bi-check-circle-fill text-green-600 dark:text-green-400"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="bi bi-circle text-gray-400 dark:text-gray-600"></i>
+                                                                }
+                                                                <span class="@(topic.IsCompleted ? "line-through text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-white")">
+                                                                    @topic.TopicTitle
+                                                                </span>
+                                                            </div>
+                                                        </button>
+                                                    </form>
+                                                }
+                                                
+                                                <!-- Soru Çözümü Dengeli -->
+                                                @if (lesson.QuestionCount > 0)
+                                                {
+                                                    <div class="flex items-center gap-2 text-xs bg-yellow-50/80 dark:bg-yellow-900/20 px-3 py-2 rounded border border-yellow-200 dark:border-yellow-800 mt-1">
+                                                        <i class="bi bi-question-circle-fill text-yellow-600 dark:text-yellow-400"></i>
+                                                        <span class="text-gray-700 dark:text-gray-300">
+                                                            <strong>@lesson.QuestionCount soru</strong> çözümü
+                                                        </span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-xl shadow-lg p-6 text-center">
+                    <i class="bi bi-calendar-x text-gray-400 text-4xl mb-2"></i>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Bu hafta için program bulunamadı.</p>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script>
+// Collapsible fonksiyonları
+function toggleDay(dayId) {
+    const content = document.getElementById(dayId);
+    const icon = document.getElementById(dayId + '-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-down');
+        localStorage.setItem(dayId, 'open');
+    } else {
+        content.style.display = 'none';
+        icon.classList.remove('bi-chevron-down');
+        icon.classList.add('bi-chevron-right');
+        localStorage.setItem(dayId, 'closed');
+    }
+}
+
+function toggleLesson(lessonId) {
+    const content = document.getElementById(lessonId);
+    const icon = document.getElementById(lessonId + '-icon');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.classList.remove('bi-chevron-right');
+        icon.classList.add('bi-chevron-down');
+        localStorage.setItem(lessonId, 'open');
+    } else {
+        content.style.display = 'none';
+        icon.classList.remove('bi-chevron-down');
+        icon.classList.add('bi-chevron-right');
+        localStorage.setItem(lessonId, 'closed');
+    }
+}
+
+// Sayfa yüklendiğinde durumları geri yükle
+document.addEventListener('DOMContentLoaded', function() {
+    // Gün durumlarını kontrol et
+    document.querySelectorAll('[id^="day-"]').forEach(function(element) {
+        if (element.id.indexOf('-icon') === -1) {
+            const state = localStorage.getItem(element.id);
+            if (state === 'closed') {
+                element.style.display = 'none';
+                const icon = document.getElementById(element.id + '-icon');
+                if (icon) {
+                    icon.classList.remove('bi-chevron-down');
+                    icon.classList.add('bi-chevron-right');
+                }
+            }
+        }
+    });
+    
+    // Ders durumlarını kontrol et
+    document.querySelectorAll('[id^="lesson-"]').forEach(function(element) {
+        if (element.id.indexOf('-icon') === -1) {
+            const state = localStorage.getItem(element.id);
+            if (state === 'closed') {
+                element.style.display = 'none';
+                const icon = document.getElementById(element.id + '-icon');
+                if (icon) {
+                    icon.classList.remove('bi-chevron-down');
+                    icon.classList.add('bi-chevron-right');
+                }
+            }
+        }
+    });
+});
+</script>

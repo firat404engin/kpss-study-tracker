@@ -1,0 +1,85 @@
+@page "/ExamTimer"
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KPSS Deneme Zamanlayıcı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div id="overlay" class="fixed inset-0 flex items-center justify-center bg-slate-900/80 z-50">
+        <div class="text-center space-y-4">
+            <h1 class="text-2xl font-bold">KPSS Deneme Zamanlayıcı (150 dk)</h1>
+            <button id="startBtn" class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 transition">Tam Ekran Başlat</button>
+            <p class="text-sm text-gray-300">ESC tuşu ile çıkabilirsiniz.</p>
+        </div>
+    </div>
+
+    <main class="min-h-screen flex flex-col items-center justify-center select-none">
+        <div class="text-center">
+            <div class="text-7xl sm:text-8xl md:text-9xl font-bold tracking-widest drop-shadow-lg" id="timerDisplay">02:30:00</div>
+            <div class="mt-8 w-[90vw] max-w-3xl h-3 bg-white/10 rounded-full overflow-hidden">
+                <div id="progress" class="h-3 bg-emerald-500 rounded-full transition-all" style="width:0%"></div>
+            </div>
+            <div class="mt-6 text-gray-300">KPSS deneme süresi çalışıyor...</div>
+        </div>
+    </main>
+
+    <script>
+        const TOTAL_SECONDS = 150 * 60; // 150 dk
+        let remaining = TOTAL_SECONDS;
+        let intervalId = null;
+
+        function fmt(n) { return n.toString().padStart(2, '0'); }
+        function render() {
+            const h = Math.floor(remaining / 3600);
+            const m = Math.floor((remaining % 3600) / 60);
+            const s = remaining % 60;
+            document.getElementById('timerDisplay').textContent = `${fmt(h)}:${fmt(m)}:${fmt(s)}`;
+            const pct = Math.max(0, Math.min(100, (1 - remaining / TOTAL_SECONDS) * 100));
+            document.getElementById('progress').style.width = pct + '%';
+        }
+
+        function startTimer() {
+            if (intervalId) return;
+            intervalId = setInterval(() => {
+                if (remaining > 0) { remaining--; render(); }
+                else { clearInterval(intervalId); intervalId = null; }
+            }, 1000);
+        }
+
+        async function enterFullscreen() {
+            try {
+                if (document.documentElement.requestFullscreen) {
+                    await document.documentElement.requestFullscreen();
+                }
+            } catch {}
+        }
+
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            document.getElementById('overlay').classList.add('hidden');
+            await enterFullscreen();
+            startTimer();
+        });
+
+        // ESC ile çıkış
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                try { if (document.exitFullscreen) document.exitFullscreen(); } catch {}
+                window.location.href = '/';
+            }
+        });
+
+        render();
+    </script>
+</body>
+</html>
+
+
+
+

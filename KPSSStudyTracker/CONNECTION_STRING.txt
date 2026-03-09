@@ -1,0 +1,12 @@
+Render'dan aldığınız connection string:
+postgresql://kpssstudytrackerdb_user:opfqlLouXEro8FcdK8khc3FBVWiBegkb@dpg-d42ne3n5r7bs73b5n60g-a/kpssstudytrackerdb
+
+.NET için dönüştürülmüş format:
+Host=dpg-d42ne3n5r7bs73b5n60g-a;Database=kpssstudytrackerdb;Username=kpssstudytrackerdb_user;Password=opfqlLouXEro8FcdK8khc3FBVWiBegkb;Port=5432;SSL Mode=Require
+
+Render'ın bazı internal URL'lerinde port numarası olmayabilir, bu durumda:
+Host=dpg-d42ne3n5r7bs73b5n60g-a.frankfurt-postgres.render.com;Database=kpssstudytrackerdb;Username=kpssstudytrackerdb_user;Password=opfqlLouXEro8FcdK8khc3FBVWiBegkb;Port=5432;SSL Mode=Require
+
+Eğer ilk format çalışmazsa, ikinci formatı deneyin (full domain ile).
+
+

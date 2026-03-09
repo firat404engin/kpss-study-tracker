@@ -1,0 +1,14 @@
+bin/
+obj/
+.git/
+.gitignore
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+MigrationsBackup_SQLServer/
+*.md
+!README.md
+
+

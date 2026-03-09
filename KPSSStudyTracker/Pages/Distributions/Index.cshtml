@@ -1,0 +1,243 @@
+@page "/Distributions"
+@{
+    ViewData["Title"] = "Soru Dağılımları";
+}
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Hero / Header -->
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center shadow">
+                    <i class="bi bi-table text-white"></i>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">2026 KPSS Lisans Konuları ve Soru Dağılımı</h1>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400">Son 10 yılın dağılımları; kategori sekmeleriyle hızlı inceleme.</p>
+
+            <!-- Category Tabs -->
+            <div class="mt-5 flex flex-wrap gap-2">
+                <button data-target="turkce" class="dist-tab active px-4 py-2 rounded-xl text-sm font-medium bg-white/80 dark:bg-slate-800/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-slate-700 shadow hover:shadow-md transition">Türkçe</button>
+                <button data-target="matematik" class="dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition">Matematik</button>
+                <button data-target="geometri" class="dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition">Geometri</button>
+                <button data-target="tarih" class="dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition">Tarih</button>
+                <button data-target="cografya" class="dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition">Coğrafya</button>
+                <button data-target="hukuk" class="dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition">Vatandaşlık</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="space-y-10">
+        <!-- Türkçe -->
+        <section data-section="turkce">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-indigo-500"></span> Türkçe
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 dark:bg-slate-700/60 text-gray-700 dark:text-gray-200">
+                        <tr>
+                            <th class="px-3 py-2">Konu</th>
+                            <th class="px-3 py-2">2015</th><th class="px-3 py-2">2016</th><th class="px-3 py-2">2017</th><th class="px-3 py-2">2018</th><th class="px-3 py-2">2019</th><th class="px-3 py-2">2020</th><th class="px-3 py-2">2021</th><th class="px-3 py-2">2022</th><th class="px-3 py-2">2023</th><th class="px-3 py-2">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-3 py-2 font-medium">TOPLAM SORU SAYISI</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">-</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td><td class="px-3 py-2">30</td></tr>
+                        <tr><td class="px-3 py-2">Sözcükte Anlam</td><td class="px-3 py-2">2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Cümlede Anlam</td><td>3</td><td>2</td><td>3</td><td>1</td><td>2</td><td>2</td><td>-</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">Sözcük Türleri</td><td>1</td><td>2</td><td>2</td><td>1</td><td>2</td><td>2</td><td>-</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Sözcükte Yapı</td><td>1</td><td>3</td><td>1</td><td>2</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Cümlenin Ögeleri</td><td>1</td><td>-</td><td>1</td><td>-</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Cümle Türleri</td><td>1</td><td>-</td><td>-</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Dil Bilgisi Ses Olayları</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Yazım Kuralları</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Noktalama İşaretleri</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Anlatım Bozuklukları</td><td>-</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Paragrafta Anlam</td><td>13</td><td>14</td><td>14</td><td>15</td><td>14</td><td>14</td><td>-</td><td>16</td><td>15</td><td>15</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Paragrafta Anlatım Biçim</td><td>1</td><td>-</td><td>2</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Sözel Mantık</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>-</td><td>4</td><td>4</td><td>4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Matematik -->
+        <section data-section="matematik" class="hidden">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-emerald-500"></span> Matematik
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 dark:bg-slate-700/60 text-gray-700 dark:text-gray-200">
+                        <tr>
+                            <th class="px-3 py-2">Konu</th>
+                            <th class="px-3 py-2">2015</th><th class="px-3 py-2">2016</th><th class="px-3 py-2">2017</th><th class="px-3 py-2">2018</th><th class="px-3 py-2">2019</th><th class="px-3 py-2">2020</th><th class="px-3 py-2">2021</th><th class="px-3 py-2">2022</th><th class="px-3 py-2">2023</th><th class="px-3 py-2">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2 font-medium">TOPLAM SORU SAYISI</td><td>27</td><td>27</td><td>27</td><td>26</td><td>26</td><td>26</td><td>26</td><td>27</td><td>28</td><td>26</td></tr>
+                        <tr><td class="px-4 py-2">Temel Kavamlar</td><td>2</td><td>2</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Rasyonel Sayılar- Ondalıklı Sayılar</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>5</td></tr>
+                        <tr><td class="px-4 py-2">Basit Eşitsizlikler</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Mutlak Değer</td><td>2</td><td>2</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Üslü Sayılar</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>3</td><td>3</td><td>2</td><td>2</td><td>-</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Köklü Sayılar</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>2</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Çarpanlara Ayırma</td><td>-</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>-</td><td>-</td><td>-</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Oran- Orantı</td><td>2</td><td>2</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Denklem Çözme</td><td>-</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Problemler</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>8</td><td>8</td><td>8</td></tr>
+                        <tr><td class="px-4 py-2">Kümeler</td><td>-</td><td>2</td><td>-</td><td>2</td><td>2</td><td>2</td><td>2</td><td>-</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Fonksiyonlar</td><td>2</td><td>1</td><td>1</td><td>3</td><td>3</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">İşlem</td><td>6</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Permütasyon / Konbinasyon</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Olasılık</td><td>7</td><td>-</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Sayısal Mantık</td><td>5</td><td>3</td><td>6</td><td>3</td><td>-</td><td>-</td><td>-</td><td>4</td><td>4</td><td>4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Geometri -->
+        <section data-section="geometri" class="hidden">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-rose-500"></span> Geometri
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 dark:bg-slate-700/60 text-gray-700 dark:text-gray-200">
+                        <tr>
+                            <th class="px-3 py-2">Konu</th>
+                            <th class="px-3 py-2">2015</th><th class="px-3 py-2">2016</th><th class="px-3 py-2">2017</th><th class="px-3 py-2">2018</th><th class="px-3 py-2">2019</th><th class="px-3 py-2">2020</th><th class="px-3 py-2">2021</th><th class="px-3 py-2">2022</th><th class="px-3 py-2">2023</th><th class="px-3 py-2">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2 font-medium">TOPLAM SORU SAYISI</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td></tr>
+                        <tr><td class="px-4 py-2">Geometrik Kavramlar ve Açılar</td><td>-</td><td>1</td><td>1</td><td>2</td><td>-</td><td>1</td><td>1</td><td>2</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Çokgenler ve Dörtgenler</td><td>1</td><td>1</td><td>1</td><td>-</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Çember ve Daire</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Analitik Geometri</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Katı Cisimler</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tarih -->
+        <section data-section="tarih" class="hidden">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-amber-500"></span> Tarih
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 dark:bg-slate-700/60 text-gray-700 dark:text-gray-200">
+                        <tr>
+                            <th class="px-3 py-2">Konu</th>
+                            <th class="px-3 py-2">2015</th><th class="px-3 py-2">2016</th><th class="px-3 py-2">2017</th><th class="px-3 py-2">2018</th><th class="px-3 py-2">2019</th><th class="px-3 py-2">2020</th><th class="px-3 py-2">2021</th><th class="px-3 py-2">2022</th><th class="px-3 py-2">2023</th><th class="px-3 py-2">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2 font-medium">TOPLAM SORU SAYISI</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+                        <tr><td class="px-4 py-2">İslamiyet Öncesi Türk Tarihi-İlk ve Orta Çağda Türk Dünyası</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">İslamiyet Öncesi Türk Devletlerinde Kültür ve Uygarlık</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">İlk Türk İslam Devletleri -Türklerin İslamiyeti Kabulü</td><td>1</td><td>-</td><td>-</td><td>2</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">İlk Türk İslam Devletlerinde Kültür ve Uygarlık</td><td>-</td><td>2</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr><td class="px-4 py-2">Osmanlı Devleti Siyaseti</td><td>4</td><td>6</td><td>6</td><td>5</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Osmanlı Devleti Kültür ve Uygarlık</td><td>5</td><td>3</td><td>3</td><td>2</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+                        <tr><td class="px-4 py-2">20. Yüzyıl Osmanlı Devleti</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Kurtuluş Savaşı</td><td>2</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">İnkılap Tarihi</td><td>4</td><td>3</td><td>2</td><td>3</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Atatürk Dönemi İç ve Dış Politikalar</td><td>2</td><td>1</td><td>2</td><td>4</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">Atatürk’ün İlke ve İnkılapları</td><td>1</td><td>2</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Çağdaş Türk ve Dünya Edebiyatı</td><td>3</td><td>3</td><td>2</td><td>3</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Coğrafya -->
+        <section data-section="cografya" class="hidden">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-sky-500"></span> Coğrafya
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-gray-50 dark:bg-slate-700/60 text-gray-700 dark:text-gray-200">
+                        <tr>
+                            <th class="px-3 py-2">Konu</th>
+                            <th class="px-3 py-2">2015</th><th class="px-3 py-2">2016</th><th class="px-3 py-2">2017</th><th class="px-3 py-2">2018</th><th class="px-3 py-2">2019</th><th class="px-3 py-2">2020</th><th class="px-3 py-2">2021</th><th class="px-3 py-2">2022</th><th class="px-3 py-2">2023</th><th class="px-3 py-2">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2 font-medium">TOPLAM SORU SAYISI</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td><td>18</td></tr>
+                        <tr><td class="px-4 py-2">Türkiye’nin Coğrafi Konumu</td><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Türkiye’nin İklimi ve Bitki Örtüsü</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">Türkiye’nin Fiziki Özellikleri</td><td>5</td><td>5</td><td>5</td><td>5</td><td>4</td><td>4</td><td>4</td><td>6</td><td>7</td><td>5</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Türkiye’de Nüfus ve Yerleşme</td><td>3</td><td>3</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">Tarım</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Hayvancılık</td><td>1</td><td>1</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>1</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Madenler ve Enerji Kaynakları</td><td>2</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td><td>3</td><td>3</td><td>1</td><td>2</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Sanayi ve Endüstri</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr>
+                        <tr><td class="px-4 py-2">Ulaşım</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>1</td><td>2</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Ticaret</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Turizm</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Bölgeler Coğrafyası</td><td>-</td><td>-</td><td>-</td><td>1</td><td>1</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td></tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vatandaşlık / Hukuk -->
+        <section data-section="hukuk" class="hidden">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="inline-flex w-2 h-2 rounded-full bg-teal-500"></span> Vatandaşlık / Hukuk
+            </h2>
+            <div class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur">
+                <div class="max-h-[28rem] overflow-auto">
+                <table class="min-w-full text-sm text-left">
+                    <thead class="sticky top-0 z-10 bg-gray-50/95 dark:bg-slate-700/90 text-gray-700 dark:text-gray-200 backdrop-blur">
+                        <tr>
+                            <th class="px-4 py-3">Konu</th>
+                            <th class="px-4 py-3">2015</th><th class="px-4 py-3">2016</th><th class="px-4 py-3">2017</th><th class="px-4 py-3">2018</th><th class="px-4 py-3">2019</th><th class="px-4 py-3">2020</th><th class="px-4 py-3">2021</th><th class="px-4 py-3">2022</th><th class="px-4 py-3">2023</th><th class="px-4 py-3">2024</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2 font-medium">TOPLAM SORU SAYISI</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+                        <tr><td class="px-4 py-2">Temel Hukuk Kavramları</td><td>2</td><td>1</td><td>1</td><td>2</td><td>3</td><td>3</td><td>3</td><td>2</td><td>2</td><td>2</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Anayasal Kavramlar</td><td>1</td><td>-</td><td>-</td><td>1</td><td>-</td><td>-</td><td>-</td><td>1</td><td>4</td><td>4</td></tr>
+                        <tr><td class="px-4 py-2">Türk Anayasa Tarihi</td><td>-</td><td>1</td><td>-</td><td>1</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td><td>-</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Temel Hak Ödevler</td><td>1</td><td>1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>1</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Yasama</td><td>2</td><td>1</td><td>3</td><td>2</td><td>-</td><td>-</td><td>-</td><td>2</td><td>-</td><td>-</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">Yürütme</td><td>-</td><td>1</td><td>3</td><td>1</td><td>2</td><td>2</td><td>2</td><td>1</td><td>-</td><td>-</td></tr>
+                        <tr><td class="px-4 py-2">Yargı</td><td>1</td><td>1</td><td>1</td><td>-</td><td>2</td><td>2</td><td>2</td><td>-</td><td>-</td><td>1</td></tr>
+                        <tr class="bg-gray-50/60 dark:bg-slate-700/30"><td class="px-4 py-2">İdare Hukuku</td><td>2</td><td>3</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tabs = document.querySelectorAll('.dist-tab');
+    const sections = document.querySelectorAll('section[data-section]');
+    function activate(target){
+        sections.forEach(s=>{ s.classList.toggle('hidden', s.getAttribute('data-section')!==target); });
+        tabs.forEach(b=>{
+            const on = b.getAttribute('data-target')===target;
+            b.classList.toggle('active', on);
+            if(on){
+                b.className = 'dist-tab active px-4 py-2 rounded-xl text-sm font-medium bg-white/80 dark:bg-slate-800/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-slate-700 shadow hover:shadow-md transition';
+            } else {
+                b.className = 'dist-tab px-4 py-2 rounded-xl text-sm font-medium bg-white/70 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border border-gray-200/60 dark:border-slate-700 hover:shadow-md transition';
+            }
+        });
+    }
+    tabs.forEach(t=> t.addEventListener('click', ()=> activate(t.getAttribute('data-target'))));
+    // default
+    activate('turkce');
+</script>
+</div>
+
+

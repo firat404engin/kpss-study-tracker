@@ -1,0 +1,81 @@
+@page
+@model KPSSStudyTracker.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+                <i class="bi bi-person-plus-fill text-primary-600 text-2xl"></i>
+            </div>
+            <h2 class="mt-6 text-3xl font-bold text-gray-900 dark:text-white">KPSS Çalışma Takip</h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Yeni hesap oluşturun</p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8">
+            <form method="post" class="space-y-6">
+                <div>
+                    <label asp-for="Input.Username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Kullanıcı Adı
+                    </label>
+                    <input asp-for="Input.Username" 
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="Kullanıcı adınızı girin" />
+                    <span asp-validation-for="Input.Username" class="text-red-500 text-sm"></span>
+                </div>
+                
+                <div>
+                    <label asp-for="Input.Password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Şifre
+                    </label>
+                    <input asp-for="Input.Password" 
+                           type="password"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="Şifrenizi girin (en az 6 karakter)" />
+                    <span asp-validation-for="Input.Password" class="text-red-500 text-sm"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.ConfirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Şifre Tekrar
+                    </label>
+                    <input asp-for="Input.ConfirmPassword" 
+                           type="password"
+                           class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" 
+                           placeholder="Şifrenizi tekrar girin" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-red-500 text-sm"></span>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                    <i class="bi bi-person-plus-fill mr-2"></i>Kayıt Ol
+                </button>
+                
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                        <div class="flex">
+                            <i class="bi bi-exclamation-triangle-fill text-red-500 mr-2"></i>
+                            <span class="text-red-700 dark:text-red-300 text-sm">@Model.ErrorMessage</span>
+                        </div>
+                    </div>
+                }
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Zaten hesabınız var mı? 
+                    <a asp-page="/Account/Login" class="font-medium text-primary-600 hover:text-primary-500">
+                        Giriş yap
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

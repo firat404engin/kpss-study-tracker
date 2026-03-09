@@ -1,0 +1,118 @@
+@page
+@model KPSSStudyTracker.Pages.StudyPlan.CreateModel
+@{
+    ViewData["Title"] = "Hafta Planı Oluştur";
+}
+
+<!-- Modern Gradient Background -->
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <!-- Floating Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-blue-200 dark:bg-blue-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-200 dark:bg-purple-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="absolute top-40 left-1/2 w-60 h-60 bg-pink-200 dark:bg-pink-800 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-30 animate-pulse" style="animation-delay: 4s;"></div>
+    </div>
+
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Modern Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl mb-6 shadow-lg">
+                <i class="bi bi-calendar-plus text-white text-3xl"></i>
+            </div>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+                Hafta Planı Oluştur
+            </h1>
+            <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+                Kendi çalışma programınızı oluşturun ve hedeflerinize ulaşın
+            </p>
+        </div>
+
+        <!-- Modern Glass Card -->
+        <div class="backdrop-blur-xl bg-white/80 dark:bg-slate-800/80 rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700/30 p-8">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="mb-8 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 border border-red-200/50 dark:border-red-700/50 rounded-2xl p-6 backdrop-blur-sm">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mr-4">
+                            <i class="bi bi-exclamation-triangle text-red-600 dark:text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-red-800 dark:text-red-200 font-semibold text-lg">Hata!</h4>
+                            <div asp-validation-summary="All" class="text-red-700 dark:text-red-300 text-sm mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <form method="post" class="space-y-8">
+                @Html.AntiForgeryToken()
+                
+                <!-- Plan Basic Info -->
+                <div class="bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/10 dark:to-purple-900/10 rounded-2xl p-6 border border-blue-100/50 dark:border-blue-800/30">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mr-3">
+                            <i class="bi bi-info-circle-fill text-white text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Plan Bilgileri</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <i class="bi bi-calendar-week mr-2 text-blue-500"></i>Hafta Numarası <span class="text-red-500">*</span>
+                            </label>
+                            <input asp-for="Input.WeekNumber" 
+                                   type="number" 
+                                   min="1" 
+                                   max="52"
+                                   class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" 
+                                   placeholder="1" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <i class="bi bi-tag-fill mr-2 text-purple-500"></i>Plan Başlığı <span class="text-red-500">*</span>
+                            </label>
+                            <input asp-for="Input.PlanTitle" 
+                                   class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md" 
+                                   placeholder="Örn: Temel Matematik Haftası" />
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 space-y-2">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            <i class="bi bi-sticky-fill mr-2 text-green-500"></i>Plan Açıklaması
+                        </label>
+                        <textarea asp-for="Input.Description" 
+                                  rows="3"
+                                  class="w-full px-4 py-3 bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600/50 rounded-xl shadow-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:text-white backdrop-blur-sm transition-all duration-200 hover:shadow-md resize-none" 
+                                  placeholder="Bu hafta için planınızı açıklayın..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Günlük Planlama kaldırıldı: plan veritabanındaki ders/konulara göre otomatik oluşturulacak -->
+                <div class="bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-900/10 dark:to-teal-900/10 rounded-2xl p-6 border border-emerald-100/50 dark:border-emerald-800/30">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-3">
+                            <i class="bi bi-magic text-white text-lg"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Otomatik Planlama</h3>
+                    </div>
+                    <p class="text-gray-700 dark:text-gray-300">
+                        Kayıtlı ders ve konular haftada 3 gün olacak şekilde ardışık haftalara dağıtılır. Her gün bir ders seçilir ve o dersten belirli sayıda konu planlanır.
+                    </p>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex justify-end space-x-4 pt-8">
+                    <a href="/StudyPlan" class="group px-6 py-3 bg-white/60 dark:bg-slate-700/60 border border-gray-200/50 dark:border-slate-600/50 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-white/80 dark:hover:bg-slate-700/80 transition-all duration-200 backdrop-blur-sm shadow-lg hover:shadow-xl">
+                        <i class="bi bi-x-circle mr-2 group-hover:scale-110 transition-transform"></i>İptal
+                    </a>
+                    <button type="submit" class="group px-8 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i class="bi bi-check-circle mr-2 group-hover:scale-110 transition-transform"></i>Planı Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

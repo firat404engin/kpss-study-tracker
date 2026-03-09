@@ -1,0 +1,400 @@
+@page
+@model KPSSStudyTracker.Pages.IndexModel
+@{
+    ViewData["Title"] = "KPSS Çalışma Takip";
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header removed per request -->
+
+    <!-- Main Cards Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 items-stretch">
+        <!-- Dynamic Countdown Card -->
+        <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg p-6 text-white relative overflow-hidden flex flex-col h-full lg:min-h-[520px]">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -translate-y-16 translate-x-16"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full translate-y-12 -translate-x-12"></div>
+            
+            <div class="relative z-10 text-center">
+                <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm animate-pulse">
+                    <i class="bi bi-hourglass-split text-white text-3xl"></i>
+                </div>
+                <h1 class="text-xl font-bold mb-4">KPSS Lisans 2026'ya Kalan Süre</h1>
+                
+                <!-- Dynamic Countdown Display -->
+                <div class="grid grid-cols-3 gap-3 mb-4">
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-3xl font-bold animate-pulse" id="countdownDays">-</div>
+                        <div class="text-sm opacity-90 font-semibold">Gün</div>
+                        <div class="text-xs opacity-70 mt-1" id="daysLabel">Kalan</div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-3xl font-bold animate-pulse" id="countdownHours">-</div>
+                        <div class="text-sm opacity-90 font-semibold">Saat</div>
+                        <div class="text-xs opacity-70 mt-1" id="hoursLabel">Kalan</div>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm hover:bg-opacity-30 transition-all duration-300 transform hover:scale-105">
+                        <div class="text-3xl font-bold animate-pulse" id="countdownMinutes">-</div>
+                        <div class="text-sm opacity-90 font-semibold">Dakika</div>
+                        <div class="text-xs opacity-70 mt-1" id="minutesLabel">Kalan</div>
+                    </div>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-white bg-opacity-20 rounded-full h-2 mb-4">
+                    <div class="bg-white h-2 rounded-full transition-all duration-1000 ease-out" id="countdownProgress" style="width: 0%"></div>
+                </div>
+                
+                <p class="text-sm opacity-90 flex items-center justify-center">
+                    <i class="bi bi-calendar-event mr-2"></i>
+                    <span>Sınav: @Model.ExamDate.ToString("dd MMMM yyyy")</span>
+                </p>
+                <p class="text-xs opacity-80 flex items-center justify-center mt-2">
+                    <i class="bi bi-pencil-square mr-2"></i>
+                    <span>Başvuru: @Model.ApplicationStartDate.ToString("dd MMMM") - @Model.ApplicationEndDate.ToString("dd MMMM yyyy")</span>
+                </p>
+
+
+                <!-- KPSS Deneme Sınav Saati -->
+                <div class="mt-4 p-3 bg-white/10 rounded-lg backdrop-blur-sm text-left">
+                    <div class="flex items-center justify-between">
+                        <div class="text-xs font-semibold opacity-90">KPSS Deneme Sınav Saati</div>
+                        <a href="/ExamTimer" class="text-[11px] px-3 py-1.5 rounded-md bg-emerald-500/90 text-white hover:bg-emerald-600 transition">Başlat</a>
+                    </div>
+                    <p class="mt-2 text-[11px] opacity-80">Tam ekran zamanlayıcı 150 dakika süresiyle açılır. ESC ile çıkabilirsiniz.</p>
+                </div>
+
+                <!-- Bugün Özeti (mini) -->
+                @{ var todayTotal = Model.TodayTodos.Count; var todayDone = Model.TodayTodos.Count(t => t.IsCompleted); var todayPending = todayTotal - todayDone; }
+                <div class="mt-4 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+                    <div class="text-xs font-semibold opacity-90 mb-2">Bugün Özeti</div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-[11px]">
+                        <div class="bg-white/15 rounded-md p-2">
+                            <div class="font-bold">@todayTotal</div>
+                            <div class="opacity-80">Görev</div>
+                        </div>
+                        <div class="bg-white/15 rounded-md p-2">
+                            <div class="font-bold">@todayDone</div>
+                            <div class="opacity-80">Tamam</div>
+                        </div>
+                        <div class="bg-white/15 rounded-md p-2">
+                            <div class="font-bold">@todayPending</div>
+                            <div class="opacity-80">Bekleyen</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column: Motivation + Weekly Progress stacked, aligned -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+            <!-- Motivation Card (compact) -->
+            <div class="bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl shadow-lg p-3 text-white relative overflow-hidden max-h-48">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-white opacity-10 rounded-full -translate-y-20 translate-x-20"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-10 rounded-full translate-y-16 -translate-x-16"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center mb-1.5">
+                        <div class="w-7 h-7 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-2.5 backdrop-blur-sm">
+                            <i class="bi bi-heart-fill text-white text-sm"></i>
+                        </div>
+                        <h3 class="text-base font-semibold">Günün Motivasyonu</h3>
+                    </div>
+                    <p class="text-xs mb-2 leading-relaxed">@Model.DailyQuote</p>
+                    <form method="post" asp-page-handler="NewQuote">
+                        <button type="submit" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-3 py-1.5 rounded-md transition-all duration-200 flex items-center backdrop-blur-sm border border-white border-opacity-30 text-xs">
+                            <i class="bi bi-arrow-clockwise mr-2"></i>Yeni Mesaj Göster
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Weekly Lesson Progress -->
+            <div class="backdrop-blur bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/30 p-4">
+                <div class="flex items-center mb-3">
+                    <div class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="bi bi-bar-chart-fill text-white"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Haftalık Hedef İlerlemesi</h3>
+                </div>
+                <div class="space-y-3">
+                    @foreach (var lp in Model.LessonProgress)
+                    {
+                        <div class="p-3 rounded-xl border border-slate-200/70 dark:border-slate-600/40 bg-white/70 dark:bg-slate-700/60">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">@lp.LessonName</div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">Bu hafta: @lp.WeeklyCompleted</span>
+                                    <span class="text-xs text-gray-600 dark:text-gray-400">%@lp.OverallPercent</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 h-2 rounded-full transition-all" style="width:@lp.OverallPercent%"></div>
+                            </div>
+                        </div>
+                    }
+                    @if (!Model.LessonProgress.Any())
+                    {
+                        <div class="p-6 text-center text-sm text-gray-600 dark:text-gray-400">İlerleme göstermek için ders/konu ekleyin.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Cards Row + Today's Todo -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Progress Summary -->
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl shadow-lg p-6 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-28 h-28 bg-white opacity-10 rounded-full -translate-y-14 translate-x-14"></div>
+            <div class="absolute bottom-0 left-0 w-20 h-20 bg-white opacity-10 rounded-full translate-y-10 -translate-x-10"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm">
+                        <i class="bi bi-trophy-fill text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Genel İlerleme</h3>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-white bg-opacity-30 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="bi bi-check-circle-fill text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm opacity-90">Bitirilen Konu</p>
+                                    <p class="text-2xl font-bold">@Model.TotalTopicsCompleted</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 backdrop-blur-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-white bg-opacity-30 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="bi bi-pencil-square text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm opacity-90">Çözülen Soru</p>
+                                    <p class="text-2xl font-bold">@Model.TotalQuestions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Todo List (moved to home) -->
+        <div class="lg:col-span-2 backdrop-blur bg-white/80 dark:bg-slate-800/80 rounded-2xl shadow-xl border border-white/20 dark:border-slate-700/30 p-4">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
+                    <i class="bi bi-check2-square text-white"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Bugünün Görevleri</h3>
+                <a href="/Todo" class="ml-auto text-sm text-emerald-600 dark:text-emerald-400 hover:underline">Tümünü Gör</a>
+            </div>
+            <div class="space-y-3">
+                @foreach (var t in Model.TodayTodos)
+                {
+                    <div class="flex items-start gap-3 p-3 rounded-xl border border-slate-200/70 dark:border-slate-600/40 bg-white/80 dark:bg-slate-700/60 shadow-sm">
+                        <span class="text-xs font-semibold px-2 py-1 rounded-full @(t.IsCompleted ? "bg-emerald-100 text-emerald-700" : "bg-yellow-100 text-yellow-700")">@(t.IsCompleted ? "Tamamlandı" : "Yapılacak")</span>
+                        <div class="flex-1 text-sm @(t.IsCompleted ? "line-through text-gray-500" : "text-gray-900 dark:text-white")">@t.Title</div>
+                        @if (!string.IsNullOrEmpty(t.Notes))
+                        {
+                            <div class="text-xs text-gray-500 dark:text-gray-400">@t.Notes</div>
+                        }
+                    </div>
+                }
+                @if (!Model.TodayTodos.Any())
+                {
+                    <div class="p-6 text-center text-sm text-gray-600 dark:text-gray-400">Bugün için görev yok. /Todo sayfasından ekleyin.</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Exams Chart (optional keep) -->
+    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white relative overflow-hidden mb-8">
+            <div class="absolute top-0 right-0 w-36 h-36 bg-white opacity-10 rounded-full -translate-y-18 translate-x-18"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full translate-y-12 -translate-x-12"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm">
+                        <i class="bi bi-graph-up-arrow text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold">Son Deneme Sınavları</h3>
+                </div>
+                <div class="h-64 bg-white bg-opacity-10 rounded-lg p-4 backdrop-blur-sm">
+                    <canvas id="examChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-gradient-to-br from-slate-800 to-gray-900 rounded-xl shadow-lg p-6 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-16 translate-x-16"></div>
+        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-5 rounded-full translate-y-12 -translate-x-12"></div>
+        
+        <div class="relative z-10">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-yellow-500 bg-opacity-20 rounded-full flex items-center justify-center mr-4 backdrop-blur-sm">
+                    <i class="bi bi-lightning-fill text-yellow-400 text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold">Hızlı İşlemler</h3>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="/Lessons/Create" class="group flex flex-col items-center p-6 bg-blue-500 bg-opacity-20 rounded-xl hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm border border-blue-400 border-opacity-30 hover:scale-105">
+                    <div class="w-12 h-12 bg-blue-500 bg-opacity-30 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="bi bi-plus-circle-fill text-blue-300 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-blue-200">Yeni Ders</span>
+                </a>
+                
+                <a href="/Exams/Create" class="group flex flex-col items-center p-6 bg-green-500 bg-opacity-20 rounded-xl hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm border border-green-400 border-opacity-30 hover:scale-105">
+                    <div class="w-12 h-12 bg-green-500 bg-opacity-30 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="bi bi-clipboard-plus-fill text-green-300 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-green-200">Yeni Deneme</span>
+                </a>
+                
+                <a href="/Statistics" class="group flex flex-col items-center p-6 bg-purple-500 bg-opacity-20 rounded-xl hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm border border-purple-400 border-opacity-30 hover:scale-105">
+                    <div class="w-12 h-12 bg-purple-500 bg-opacity-30 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="bi bi-graph-up-arrow text-purple-300 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-purple-200">İstatistikler</span>
+                </a>
+                
+                <a href="/Backup" class="group flex flex-col items-center p-6 bg-orange-500 bg-opacity-20 rounded-xl hover:bg-opacity-30 transition-all duration-200 backdrop-blur-sm border border-orange-400 border-opacity-30 hover:scale-105">
+                    <div class="w-12 h-12 bg-orange-500 bg-opacity-30 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="bi bi-cloud-download-fill text-orange-300 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-orange-200">Yedekle</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script>
+    const examDate = new Date('@Model.ExamDate.ToString("yyyy-MM-dd")');
+    
+    // Dynamic Countdown Timer with Hourglass Effect
+    function renderCountdown() {
+        const now = new Date();
+        const diff = examDate - now;
+        
+        if (diff <= 0) {
+            document.getElementById('countdownDays').textContent = '0';
+            document.getElementById('countdownHours').textContent = '0';
+            document.getElementById('countdownMinutes').textContent = '0';
+            document.getElementById('countdownProgress').style.width = '100%';
+            // countdownMessage removed
+            return;
+        }
+        
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Animate number changes
+        animateNumber('countdownDays', days);
+        animateNumber('countdownHours', hours);
+        animateNumber('countdownMinutes', minutes);
+
+        // Update progress bar (assuming exam is in ~1 year)
+        const totalDays = 365;
+        const progress = Math.max(0, Math.min(100, ((totalDays - days) / totalDays) * 100));
+        document.getElementById('countdownProgress').style.width = progress + '%';
+
+        // removed motivational message line
+    }
+
+    // Animate number changes
+    function animateNumber(elementId, newValue) {
+        const element = document.getElementById(elementId);
+        const currentValue = parseInt(element.textContent) || 0;
+        
+        if (currentValue !== newValue) {
+            element.style.transform = 'scale(1.2)';
+            element.style.color = '#ffd700';
+            
+            setTimeout(() => {
+                element.textContent = newValue;
+                element.style.transform = 'scale(1)';
+                element.style.color = '';
+            }, 150);
+        }
+    }
+
+    renderCountdown();
+    setInterval(renderCountdown, 1000); // Update every second for smooth animation
+    
+    // Chart data
+    const labels = @Html.Raw(Model.RecentExamsJson);
+    const data = @Html.Raw(Model.RecentExamsNetJson);
+    
+    const ctx = document.getElementById('examChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Net Skor',
+                    data: data,
+                    borderColor: 'rgba(255, 255, 255, 0.8)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    pointBorderColor: 'rgba(255, 255, 255, 0.3)',
+                    pointBorderWidth: 2,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Pomodoro alanı kaldırıldı
+</script>
