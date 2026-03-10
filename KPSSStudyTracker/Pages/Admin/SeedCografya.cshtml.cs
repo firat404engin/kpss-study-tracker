@@ -24,7 +24,7 @@ namespace KPSSStudyTracker.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (!IsAdmin)
+            if (!await IsAdminAsync(_context))
             {
                 return RedirectToPage("/Index");
             }
