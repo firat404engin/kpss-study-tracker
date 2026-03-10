@@ -92,6 +92,7 @@
             </h3>
         </div>
         
+        <!-- Desktop & Mobile Responsive Table -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-700">
@@ -99,19 +100,19 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                             Konu Başlığı
                         </th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden sm:table-cell">
                             Durum
                         </th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                             Soru
                         </th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                             Doğru
                         </th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                             Yanlış
                         </th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                             Doğruluk %
                         </th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -128,12 +129,12 @@
                         var correct = p?.CorrectAnswers ?? 0;
                         var wrong = p?.WrongAnswers ?? 0;
                         var completed = p?.Completed ?? false;
-                        var source = t.Source ?? ""; // Source is global in Topic
-                        var notes = t.Notes ?? ""; // Notes is global in Topic
+                        var source = t.Source ?? "";
+                        var notes = t.Notes ?? "";
                         var accuracy = p?.AccuracyPct ?? 0;
                         
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <td class="px-6 py-4">
+                            <td class="px-4 sm:px-6 py-4">
                                 <div class="font-medium text-gray-900 dark:text-white">@t.Title</div>
                                 @if (!string.IsNullOrEmpty(source) || !string.IsNullOrEmpty(notes))
                                 {
@@ -148,8 +149,30 @@
                                         }
                                     </div>
                                 }
+                                <!-- Mobile Stats - Show on small screens only -->
+                                <div class="mt-2 flex gap-3 text-xs sm:hidden">
+                                    <span class="text-gray-600 dark:text-gray-400">
+                                        @if (completed)
+                                        {
+                                            <i class="bi bi-check-circle-fill text-green-600 mr-1"></i><span>Tamamlandı</span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-clock-fill text-yellow-600 mr-1"></i><span>Devam</span>
+                                        }
+                                    </span>
+                                    <span class="text-gray-600 dark:text-gray-400">
+                                        Soru: <strong>@solved</strong>
+                                    </span>
+                                    <span class="text-green-600">
+                                        D: <strong>@correct</strong>
+                                    </span>
+                                    <span class="text-red-600">
+                                        Y: <strong>@wrong</strong>
+                                    </span>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-6 py-4 text-center hidden sm:table-cell">
                                 @if (completed)
                                 {
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
@@ -163,42 +186,39 @@
                                     </span>
                                 }
                             </td>
-                            <td class="px-6 py-4 text-center text-sm text-gray-900 dark:text-white">@solved</td>
-                            <td class="px-6 py-4 text-center text-sm text-green-600 font-medium">@correct</td>
-                            <td class="px-6 py-4 text-center text-sm text-red-600 font-medium">@wrong</td>
-                            <td class="px-6 py-4 text-center text-sm font-medium @(accuracy >= 70 ? "text-green-600" : accuracy >= 50 ? "text-yellow-600" : "text-red-600")">
+                            <td class="px-6 py-4 text-center text-sm text-gray-900 dark:text-white hidden md:table-cell">@solved</td>
+                            <td class="px-6 py-4 text-center text-sm text-green-600 font-medium hidden md:table-cell">@correct</td>
+                            <td class="px-6 py-4 text-center text-sm text-red-600 font-medium hidden md:table-cell">@wrong</td>
+                            <td class="px-6 py-4 text-center text-sm font-medium @(accuracy >= 70 ? "text-green-600" : accuracy >= 50 ? "text-yellow-600" : "text-red-600") hidden md:table-cell">
                                 %@accuracy
                             </td>
-                            <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center space-x-1">
+                            <td class="px-4 sm:px-6 py-4 text-center">
+                                <div class="flex justify-center items-center gap-1 sm:gap-2">
                                     @if (Model.IsAdmin)
                                     {
-                                    <!-- Düzenle Butonu - Sadece Admin -->
                                     <button onclick="openEditModal(@t.Id, '@Html.Raw(t.Title.Replace("'", "\\'"))', @solved, @correct, @wrong, '@Html.Raw(source.Replace("'", "\\'"))', '@Html.Raw(notes.Replace("'", "\\'"))')" 
-                                            class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors p-1" 
+                                            class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 transition-colors p-2 sm:p-1 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20" 
                                             title="Düzenle">
-                                        <i class="bi bi-pencil-fill"></i>
+                                        <i class="bi bi-pencil-fill text-lg sm:text-base"></i>
                                     </button>
                                     }
                                     
-                                    <!-- Durum Değiştir Butonu - Mobilde Büyük -->
                                     <form method="post" asp-page-handler="Toggle" class="inline">
                                         <input type="hidden" name="topicId" value="@t.Id" />
-                                        <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors p-2 sm:p-1 text-lg sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center" 
-                                                title="@(completed ? "Tamamlanmadı olarak işaretle" : "Konu Bitti")">
-                                            <i class="bi bi-toggle-@(completed ? "on" : "off")"></i>
+                                        <button type="submit" class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 transition-colors p-2 sm:p-1 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20" 
+                                                title="@(completed ? "Tamamlanmadı" : "Konu Bitti")">
+                                            <i class="bi bi-toggle-@(completed ? "on" : "off") text-xl sm:text-base"></i>
                                         </button>
                                     </form>
                                     
-                                    <!-- Sil Butonu - Sadece Admin -->
                                     @if (Model.IsAdmin)
                                     {
                                     <form method="post" asp-page-handler="DeleteTopic" class="inline" 
                                           onsubmit="return confirm('Bu konunun ilerlemesini silmek istediğinizden emin misiniz?')">
                                         <input type="hidden" name="topicId" value="@t.Id" />
-                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors p-2 sm:p-1 text-lg sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center" 
+                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 transition-colors p-2 sm:p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" 
                                                 title="İlerlemeyi Sil">
-                                            <i class="bi bi-trash-fill"></i>
+                                            <i class="bi bi-trash-fill text-lg sm:text-base"></i>
                                         </button>
                                     </form>
                                     }
