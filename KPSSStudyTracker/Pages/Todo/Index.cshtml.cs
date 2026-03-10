@@ -40,7 +40,7 @@ namespace KPSSStudyTracker.Pages.Todo
             _context.DailyTodos.Add(new DailyTodo
             {
                 UserId = userId,
-                Date = date.Date,
+                Date = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc),
                 Title = title.Trim(),
                 CreatedAt = DateTime.UtcNow
             });
